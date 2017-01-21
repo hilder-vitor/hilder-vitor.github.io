@@ -22,13 +22,27 @@ MathJax.Hub.Config({
 	<body style='width: 900px; margin:20px auto'>
 		<div id='bodyDiv'>
 		<div id='container'>
-		<div id='content'>
+		<div> <!-- id='content' -->
 			<h4 class="titleItem"> SVP </h4>
-
-
 			<ul>
-				<li> - In construction. </li>
+<!--				<li> - Decisional, optimization, and search versions are (polynomial) equivalent.</li>
+<br /> -->
 
+				<li> - Unlike CVP, SVP is not shown to be NP-complete! There are some hardness results for SVP, but just considering very specific scenarios (for instance, using the $\ell_\infty$ norm) or under other types of reductions (such as randomized or non-uniform reductions). <b>Therefore it may be possible that solving SVP is easier than solving CVP!</b> But even so, SVP is beleived to be NP-Hard.</li>
+				<br />
+
+				<li> - For any constant $\gamma \in [1,2[$ and any function $\alpha(n) > \sqrt{\frac{ n}{(2/\gamma)^2 - 1}}$, we can solve $CVP_\alpha$ with $O(n\log n)$ calls to an oracle that solves $SVP_\gamma$ [MC2002, theorem 4.2].
+				<p> Note, however, that it is not sufficient to show that $SVP_\gamma$ is NP-Hard because $CVP_\alpha$ is not known to be NP-Hard for such values of $\alpha$.</p>
+				</li>
+				<br />
+
+				<li> - If a specific number theoretic conjecture concerning the distribution of square free smooth numbers holds, then $\forall p \in \mathbb{N}^*$, $GapSVP_\gamma$  is NP-Hard if $\gamma < \sqrt[p]{2}$ [MC2002, Corollary 4.10].</li>
+			</ul>
+
+			
+			<h5 class="titleItem"> References </h5>
+			<ul>
+				<li>[MC2002] See chapter 3 of <a href="http://cseweb.ucsd.edu/~daniele/papers/book.html" target="blank">Complexity of Lattice Problems: A Cryptographic Perspective. By Daniele Micciancio and Shafi Goldwasser (2002)</a>" </li>
 			</ul>
 
 		</div>
