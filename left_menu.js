@@ -9,7 +9,7 @@ document.write('\
 			</figure>\
 			<figcaption style="text-align:center; color:white; padding: 5px">\
 			<b> Hilder Vitor Lima Pereira </b> <br /> <br />\
-			I am a PhD student at <a href="http://www.crypto-uni.lu/" target="_blank" > The Applied Crypto Group (ACG) </a>, a laboratory of <a href="https://wwwen.uni.lu/" target="_blank">University of Luxembourg</a>, under supervision of professor Jean-Sébastien Coron</a>.\
+			I am a PhD student at <a href="http://www.crypto-uni.lu/" target="_blank" > The Applied Crypto Group (ACG)</a>, a laboratory of <a href="https://wwwen.uni.lu/" target="_blank">University of Luxembourg</a>, under supervision of professor Jean-Sébastien Coron</a>.\
 			</figcaption>\
 			<ul>\
 				<li id="li_1"><a href="index.html" accesskey="1" title=""><b>Homepage</b></a></li>\
