@@ -95,13 +95,21 @@ wrong_answers = 0
 order_of_verbs = generate_random_permutation(QNT_VERBS)
 
 function show_final_message(){
-	alert("Congratulations, you have conjugated all our " + QNT_VERBS + "!!!")
+	document.getElementById("div_score").style.visibility = "hidden"
+
+	percentual = (100*(right_answers / (right_answers + wrong_answers))).toFixed(0)
+	document.getElementById("div_form").innerHTML = "" +
+	"<u><h3> Congratulations, you have conjugated all our " + QNT_VERBS + " verbs!!!</h3></u>"+
+	"<br/>"+
+	"<p> You have correctly answered <b>" + percentual + "%</b> of the questions.</p>"+
+	"<br/>"+
+	"<p> Click on ''Reload'' to start practicing again </p>"+
+	"<button href='#' class='btn' onclick='location.reload();'>Reload</button>"
 }
 
 function load_new_verb() {
 
-	document.getElementById("feedback_positive").style.visibility = "hidden";
-	document.getElementById("feedback_negative").style.visibility = "hidden";
+	document.getElementById("div_feedback").style.visibility = "hidden";
 
 	document.getElementById("btn_new").style.visibility = "hidden";
 	document.getElementById("btn_check").style.visibility = "visible";
@@ -126,6 +134,24 @@ function update_div_score(){
 	document.getElementById("p_percentual").innerHTML = "Percentual: " + (right_answers / (right_answers + wrong_answers)).toFixed(2) + ".";
 }
 
+function show_positive_feedback(){
+	div_feedback = document.getElementById("div_feedback")
+	div_feedback.style.visibility = "visible";
+	div_feedback.innerHTML = "<p> Very good!   (: </p>"
+	div_feedback.style.background = "LightGreen"
+	div_feedback.style.color = "black"
+}
+
+function show_negative_feedback(){
+	verb = verbs[order_of_verbs[current_verb]]
+	auxiliary = (verb.a === 'h' ? "habe" : "bin")
+	div_feedback = document.getElementById("div_feedback")
+	div_feedback.style.visibility = "visible";
+	div_feedback.innerHTML = "<p> Wrong... The expected answer was <b>''Ich " + auxiliary + " " + verb.pp + "''</b>. </p>"
+	div_feedback.style.background = "Crimson"
+	div_feedback.style.color = "white"
+}
+
 function verify_answer() {
 	verb = verbs[order_of_verbs[current_verb]]
 
@@ -142,11 +168,10 @@ function verify_answer() {
 	correct = expected_answer.test(answer)
 
 	if (correct){
-		document.getElementById("feedback_positive").style.visibility = "visible";
 		right_answers += 1
+		show_positive_feedback()
 	}else{
-		document.getElementById("feedback_negative").style.visibility = "visible";
-		document.getElementById("feedback_negative").innerHTML = "<p> Wrong... The expected answer was ''Ich " + auxiliary + " " + verb.pp + "''. </p>"
+		show_negative_feedback()
 		wrong_answers += 1
 	}
 
@@ -177,7 +202,7 @@ function verify_answer() {
 
 					<h1>Conjugate the verb in the Perfekt Tense</h1>
 					<hr>
-					<div style="height:300px" >
+					<div style="height:250px" >
 						<div id="div_form" style="background-color:LightBlue; padding:10px; height:200px; float: left" >
 							<b> <p id="p_infinitive"> Testiren    </p> </b>
 
@@ -194,8 +219,7 @@ function verify_answer() {
 						</div>
 
 					</div>
-					<div id="feedback_positive" style="background-color:LightGreen; color:black; width:450px; padding:5px;visibility:hidden;">
-						<p> Very good!   (: </p>
+					<div id="div_feedback" style="background-color:LightGreen; color:black; width:450px; padding:5px;visibility:hidden;">
 					</div>
 			
 					<div id="feedback_negative" style="background-color:Crimson; color:white; width:450px; padding:5px;visibility:hidden;">
