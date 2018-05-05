@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>Partizip Perfekt - Deutsch</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="Description" lang="en" content="ADD SITE DESCRIPTION">
+		<meta name="author" content="Hilder Vitor Lima Pereira">
+
+		<!-- icons -->
+		<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+		<link rel="shortcut icon" href="favicon.ico">
+
+		<!-- Override CSS file - add your own CSS rules -->
+		<link rel="stylesheet" href="assets/css/styles.css">
+
+<script>
+/*******************************************************
+A event lister to the ENTER KEY is created in the end of
+this page. Check the last <script> section.
+*******************************************************/
+
+
+// returns a vector with a random permutation of 1,2,...,n
+function generate_random_permutation(n) {
+	permutation = new Array(n);
+	for (var i = 0; i < n; i++){
+		permutation[i] = i;
+	}
+	// shuffle	 
+	for (var i = n - 1; i > 0; i--) {
+		var j = Math.floor(Math.random() * (i + 1));
+		var temp = permutation[i];
+		permutation[i] = permutation[j];
+		permutation[j] = temp;
+	}
+	return permutation
+}
+
+
+		/* i -> infinitive, a -> 'auxiliary', pp -> 'partizip 2', t -> translation */
+verbs = [{'i': 'anfangen',    'a': 'h', 'pp': 'angefangen', 't': 'to start'},
+          {'i': 'aufstehen',   'a': 's', 'pp': 'aufgestanden', 't': 'to get up'},
+          {'i': 'backen',      'a': 'h', 'pp': 'gebacken', 't': 'to bake, to roast'},
+          {'i': 'beginnen',    'a': 'h', 'pp': 'begonnen', 't': 'to begin'},
+          {'i': 'bekommen',    'a': 'h', 'pp': 'bekommen', 't': 'to receive, to get'},
+          {'i': 'bleiben',     'a': 's', 'pp': 'geblieben', 't': 'to stay'},
+          {'i': 'bringen',     'a': 'h', 'pp': 'gebracht', 't': 'to bring'},
+          {'i': 'denken',      'a': 'h', 'pp': 'gedacht', 't': 'to think'},
+          {'i': 'entscheiden', 'a': 'h', 'pp': 'entschieden', 't': 'to decide'},
+          {'i': 'essen',       'a': 'h', 'pp': 'gegessen', 't': 'to eat'},
+          {'i': 'fahren',      'a': 's', 'pp': 'gefahren', 't': 'to drive'},
+          {'i': 'fangen',      'a': 'h', 'pp': 'gefangen', 't': 'to catch'},
+          {'i': 'fernsehen',   'a': 'h', 'pp': 'ferngesehen', 't': 'to watch TV'},
+          {'i': 'finden',      'a': 'h', 'pp': 'gefunden', 't': 'to find'},
+          {'i': 'gehen',       'a': 's', 'pp': 'gegangen', 't': 'to go'},
+          {'i': 'gewinnen',    'a': 'h', 'pp': 'gewonnen', 't': 'to win, to gain'},
+          {'i': 'hängen',      'a': 'h', 'pp': 'gehangen', 't': 'to hang, to be attached'},
+          {'i': 'helfen',      'a': 'h', 'pp': 'geholfen', 't': 'to help'},
+          {'i': 'kommen',      'a': 's', 'pp': 'gekommen', 't': 'to come'},
+          {'i': 'lassen',      'a': 'h', 'pp': 'gelassen', 't': 'to allow, to leave'},
+          {'i': 'laufen',      'a': 's', 'pp': 'gelaufen', 't': 'to run, to jog'},
+          {'i': 'lernen',      'a': 'h', 'pp': 'gelernt', 't': 'to learn'},
+          {'i': 'lesen',       'a': 'h', 'pp': 'gelesen', 't': 'to read'},
+          {'i': 'nehmen',      'a': 'h', 'pp': 'genommen', 't': 'to take'},
+          {'i': 'rufen',       'a': 'h', 'pp': 'gerufen', 't': 'to call, to require one\'s presence'},
+          {'i': 'schlafen',    'a': 'h', 'pp': 'geschlafen', 't': 'to sleep'},
+          {'i': 'schreiben',   'a': 'h', 'pp': 'geschrieben', 't': 'to write'},
+          {'i': 'schwimmen',   'a': 's', 'pp': 'geschwommen', 't': 'to swim'},
+          {'i': 'sehen',       'a': 'h', 'pp': 'gesehen', 't': 'to see'},
+          {'i': 'singen',      'a': 'h', 'pp': 'gesungen', 't': 'to sing'},
+          {'i': 'sitzen',      'a': 'h', 'pp': 'gesessen', 't': 'to sit'},
+          {'i': 'sprechen',    'a': 'h', 'pp': 'gesprochen', 't': 'to speak, to talk'},
+          {'i': 'springen',    'a': 's', 'pp': 'gesprungen', 't': 'to jump'},
+          {'i': 'stehen',      'a': 'h', 'pp': 'gestanden', 't': 'to stand'},
+          {'i': 'treffen',     'a': 'h', 'pp': 'getroffen', 't': 'to meet'},
+          {'i': 'trinken',     'a': 'h', 'pp': 'getrunken', 't': 'to drink'},
+          {'i': 'unterschreiben', 'a': 'h', 'pp': 'unterschrieben', 't': 'to sign'},
+          {'i': 'vergessen',   'a': 'h', 'pp': 'vergessen', 't': 'to forget'},
+          {'i': 'verstehen',   'a': 'h', 'pp': 'verstanden', 't': 'to understand'},
+          {'i': 'werden',      'a': 'b', 'pp': 'geworden', 't': 'to become'},
+          {'i': 'wissen',      'a': 'h', 'pp': 'gewusst', 't': 'to know'}
+//          {'i': '',      'a': 'h', 'pp': '', 't': ''},
+	]
+
+
+QNT_VERBS = verbs.length
+
+current_verb = -1
+right_answers = 0
+wrong_answers = 0
+
+// verbs will be shown in a random order according to this random permutation
+order_of_verbs = generate_random_permutation(QNT_VERBS)
+
+function show_final_message(){
+	alert("Congratulations, you have conjugated all our " + QNT_VERBS + "!!!")
+}
+
+function load_new_verb() {
+
+	document.getElementById("feedback_positive").style.visibility = "hidden";
+	document.getElementById("feedback_negative").style.visibility = "hidden";
+
+	document.getElementById("btn_new").style.visibility = "hidden";
+	document.getElementById("btn_check").style.visibility = "visible";
+
+	current_verb += 1
+
+	if (current_verb == QNT_VERBS){
+		show_final_message()
+	}else{
+		verb = verbs[order_of_verbs[current_verb]]
+		document.getElementById("p_infinitive").innerHTML = verb.i;
+	}
+	
+	document.getElementById("input_answer").value = "";
+	document.getElementById("input_answer").focus()
+
+}
+
+function update_div_score(){
+	document.getElementById("p_correct_anwers").innerHTML = "Correct answers: " + right_answers + ".";
+	document.getElementById("p_wrong_answers").innerHTML = "Wrong answers: " + wrong_answers + ".";
+	document.getElementById("p_percentual").innerHTML = "Percentual: " + (right_answers / (right_answers + wrong_answers)).toFixed(2) + ".";
+}
+
+function verify_answer() {
+	verb = verbs[order_of_verbs[current_verb]]
+
+	/* show the translation */
+	document.getElementById("p_infinitive").innerHTML = verb.i + " (" + verb.t + ")";
+
+	if (verb.a === 'h') {
+		auxiliary = "habe"
+	}else{ /* verb.a === 's' */
+		auxiliary = "bin"
+	}
+	expected_answer = new RegExp("\\s*" + auxiliary + "\\s+" + verb.pp + "\\s*");
+	answer = "" + document.getElementById("input_answer").value;
+	correct = expected_answer.test(answer)
+
+	if (correct){
+		document.getElementById("feedback_positive").style.visibility = "visible";
+		right_answers += 1
+	}else{
+		document.getElementById("feedback_negative").style.visibility = "visible";
+		document.getElementById("feedback_negative").innerHTML = "<p> Wrong... The expected answer was ''Ich " + auxiliary + " " + verb.pp + "''. </p>"
+		wrong_answers += 1
+	}
+
+	update_div_score()
+	
+	document.getElementById("btn_new").style.visibility = "visible";
+	document.getElementById("btn_check").style.visibility = "hidden";
+}
+
+
+
+</script>
+
+	</head>
+	<body>
+		<div class="container">
+			<div class="header">
+				<h1 class="header-heading">Perfekt (past tense - German)</h1>
+			</div>
+			<div class="nav-bar">
+				<ul class="nav">
+					<li><a href="../index.html">Home</a></li>
+					<li><a href="#"></a></li>
+				</ul>
+			</div>
+			<div class="content">
+				<div class="main">
+
+					<h1>Conjugate the verb in the Perfekt Tense</h1>
+					<hr>
+					<div style="height:300px" >
+						<div id="div_form" style="background-color:LightBlue; padding:10px; height:200px; float: left" >
+							<b> <p id="p_infinitive"> Testiren    </p> </b>
+
+							<p> Ich <input style="width:250px" type="text" id="input_answer" />.</p>
+
+							<button href="#" id="btn_new" class="btn" style="visibility:;" onclick="load_new_verb();">New</button>
+							<button href="#" id="btn_check" class="btn" onclick="verify_answer()">Check</button></p>
+						</div>
+					
+						<div id="div_score" style="background-color:#b0b0b0; padding:10px; width:200px; height:200px; float:right" >
+							<p id="p_correct_anwers"> Correct answers: 0 </p>
+							<p id="p_wrong_answers"> Wrong answers: 0</p>
+							<p id="p_percentual"> </p>
+						</div>
+
+					</div>
+					<div id="feedback_positive" style="background-color:LightGreen; color:black; width:450px; padding:5px;visibility:hidden;">
+						<p> Very good!   (: </p>
+					</div>
+			
+					<div id="feedback_negative" style="background-color:Crimson; color:white; width:450px; padding:5px;visibility:hidden;">
+					</div>
+					<hr>
+	
+				</div>
+			</div>
+			<div class="footer">
+				Help other people.
+			</div>
+		</div>
+
+		<script>
+			load_new_verb()
+			ENTER = 13
+			document.addEventListener('keypress', function (e) {
+
+				if (ENTER == e.keyCode) {
+					if (document.getElementById("btn_new").style.visibility == "visible"){
+						load_new_verb()
+					}else{ //	btn_check is active 
+						verify_answer()
+					}
+				}
+			
+			})
+		</script>
+	</body>
+</html>
