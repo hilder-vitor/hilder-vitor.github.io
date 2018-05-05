@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title> Some notes on several academic topics </title>
+		<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+		    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+			});
+		</script>
+		<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+		</script>
+
+		<link href="../css/default.css" rel="stylesheet" type="text/css" media="all">
+	</head>
+
+	<body style='width: 900px; margin:20px auto'>
+		<div id='bodyDiv'>
+		<div id='container'>
+		<div id='left_menu'>
+		</div>
+
+		<!-- END MENU -->
+		<!-- START CONTENT -->
+
+		<div id=''>
+			<h4 class="titleItem"> First candidate multilinear map </h4>
+
+			<h4> Parameters: </h4>
+			<ul>
+				<li> - Ring $R = \mathbb{Z}[x]/\langle \Phi_n(x) \rangle$ and big integer $q$.</li>
+				<br/>
+
+			</ul>
+			<h4> Secret: </h4>
+			<ul>
+				<li> - Small $g$ from $R$ (with $g^{-1}$ large).</li>
+				<br/>
+				<li> - Uniform $z$ from $R_q$ ($ \mathbb{Z}_q[x]/\langle \Phi_n(x) \rangle$).</li>
+				<br/>
+			</ul>
+
+			<h4> Public: </h4>
+			<ul>
+				<li> - <i> Randomizers</i>: $x_1, x_2, ..., x_m$ such that $x_i = [b_i z^{-1}]_q$ (with $b_i \in I$ small).</li>
+				<p> They are encodings of zero, so, can be added to encodings of elements just to randomize them. </p>
+				
+				<li> - Level-1 encoding of $1 + I$: $y = [a z^{-1}]_q$ for any small $a$ from $1+I$.</li>
+				<br/>
+				<li> - Seed from strong randomnes extractor: $s$.</li>
+				<br/>
+				<li> - Level-k zero-testing parameter: $p_{zt} = [hg^{-1}z^k]_q$ with $h \leftarrow D_{\mathbb{Z}^n,\sqrt{q}}$.</li>
+				<br/>
+
+			</ul>
+
+			<h4> Functions: </h4>
+			<ul>
+				<li> - <i> Sampling level-0 encodings:</i>: Return (small) $d \leftarrow D_{\mathbb{Z}^n,\sigma_n} \in R$. (note that $d \in d+I$).</li>
+				<br/>
+				<li> - <i> Encoding level-1</i>: take a level-0 $d$, sample $r_i \leftarrow D_{\mathbb{Z}^n,\sigma_n} \in R$ and return $u = [yd + \sum_{i=1}^mr_ix_i]_q = [(ad + \sum_{i=1}^mr_ib_i) / z]_q$.</li>
+				<br/>
+				<li> - <i> Zero testing: </i>: Return 1 if $||p_{zt} u ||_\infty < q^{3/4}$ and 0 otherwise. (Note that $p_{zt} \cdot u = h (ad) g^{-1} + hg^{-1}\sum r_ib_i$)  </li>
+				<br/>
+				<li> - <i>Extract</i>: To extract a canonic random representation from a level-k encoding u:
+				<div style="padding-left:4em;">
+				(1) Multiply by the zero test: $v = [up_{zt}]_q$
+				<br/> (2) Represent $v$ as a vector $\vec{v} = \psi(v)$
+				<br/> (3) Take the most significant bits of each entry: $\vec{m} = (MSB(v_1), ..., MSB(v_\ell))$
+				<br/> (4) Use the strong randomnes extractor and the seed: $E \leftarrow SRE(\vec{m}, s)$
+				<br/> (5) Return $E$.
+				</div>
+				</li>
+
+			</ul>
+
+
+			
+			<h5 class="titleItem"> References </h5>
+
+			<ul>
+				<li>[GGH13] <a href="http://eprint.iacr.org/2012/610" target="blank"> Candidate Multilinear Maps from Ideal Lattices. (2013)</a> </li>
+			</ul>
+
+			<br />
+			<br />
+
+		</div>
+		</div>
+		<div id='footer' >
+			<h4 style="margin-left:30px">
+				<a href="index.html"> Multilinear Maps </a> | <a href="../notes.html"> Notes </a> | <a href="../index.html"> Home </a> | 
+			</h4>
+		</div>
+		</div>
+	</body>
+</html>
