@@ -1,0 +1,14 @@
+Pseudocode for naive primality test:
+
+boolean naive_primality_test
+	input: an positive integer n
+	output: a true or false value
+
+	a = 2        
+	while a < n
+		// test if n is divisible by a 
+		// (the symbol % means modular reduction)
+		if 0 == n % a
+			return false
+		a += 1      
+	return true

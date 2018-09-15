@@ -1,0 +1,14 @@
+Pseudocode for less naive 3-partition finder:
+
+integer less_naive_3_partition_finder
+	input: an positive integer n
+	output: number of triples (a, b, c) such that a, b, and c are
+			positive integers and a + b + c = n
+
+	total = 0
+	for a in 1...n
+		for b in 1...(n-a)
+			c = n - (a + b)
+			if c > 0
+				total += 1
+	return total

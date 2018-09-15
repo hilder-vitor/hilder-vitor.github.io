@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+
+		<title> Algorithms and Complexity (2018). </title>
+
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+		    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+			});
+		</script>
+		<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+		</script>
+
+		<link href="../css/default.css" rel="stylesheet" type="text/css" media="all">
+	</head>
+
+	<body style='width: 900px; margin:20px auto'>
+		<div id='bodyDiv'>
+		<div id='container'>
+		<div> <!--  content -->
+			<h2 class="titleItem"> Algorithms and Complexity </h2>
+			<h4 class="titleItem"> First homework </h4>
+
+			<p> For each of the three pseudocodes bellow, determine how the input size must be measured, find the worst and best-case time complexity, and write a python script that implements the pseudocode and runs it for each input of the respective input file. </p>
+
+			<p> Each pyhton script must read the ten lines of the respective input file, run the implemented function for each of these ten inputs, and print the time (in seconds) used to run it for each input (therefore, the output must consist of ten lines).</p>
+			
+			<p>
+			In order to measure the time, proceed as follows:
+			</p>
+
+			<ul>
+				<li> - Import the function to measure the time: <i>from timeit import default_timer as time</i> </li>
+				<br/>
+
+				<li> - Call the function time immediately before and immediatley after running your function:</li>
+				<br/>
+
+				<li> <i>start = time() <br/>
+				your_function() <br/>
+				end = time()</i> <br/>
+				</li>
+				<br/>
+				
+				<li> - Subtract these values to obtain the time: </li>
+				<br/>
+				<li> <i>print "%d seconds." % (end - start)</i> </li>
+
+			</ul>
+
+			<p> The three pseudocodes and their inputs are the following:</p>
+			<ul>
+				<li> § Naive Three Partition Finder: <a target="blank" href="naive_three_partition_finder.txt" > Pseudocode </a> and <a target="blank" href="input_naive_three_partition_finder.txt" > input file</a>. </li> 
+				<br/>
+				<li> § Less Naive Three Partition Finder: <a target="blank" href="less_naive_three_partition_finder.txt" > Pseudocode </a> and <a target="blank" href="input_less_naive_three_partition_finder.txt" > input file</a>. </li> 
+				<br/>
+				<li> § Naive Primality Test: <a target="blank" href="naive_primality_test.txt" > Pseudocode </a> and <a target="blank" href="input_naive_primality_test.txt" > input file</a>. </li>
+				<br/>
+
+			</ul>
+
+			<p> You must submit <b>four</b> files: the three python scripts and a PDF in which you show how you have defined the input size and what are the time complexities. This PDF must also contain three tables (with ten rows and two columns each) relating the inputs' size and the seconds printed by your python scripts.</p>
+
+			<p>Submit them attached to an e-mail whose subject must be [ALGORITHMS2018] YOUR NAME.</p>
+
+			<p>For instance, if your name is Caetano Veloso, then you must send me an e-mail with the subject [ALGORITHMS2018] Caetano Veloso.</p>
+
+			<p>The <b>deadline</b> for this homework is <b>October 4th, 2018</b> (CE).
+			
+			<p>Good luck.</p>
+		</div>
+		</div>
+		<div id='footer' >
+			<h3 style="margin-left:30px">
+				<a href="../teaching.html"> Teaching </a> | 
+				<a href="../index.html"> Initial Page </a> 
+			</h3>
+		</div>
+		</div>
+	</body>
