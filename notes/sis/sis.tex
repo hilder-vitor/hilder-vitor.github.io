@@ -89,7 +89,7 @@
 
 SIS stands to Small Integer Solutions and, informally, it is the problem of
 finding small nonzero vector $\vec{z}$ such that $\vec{ A z} = \vec{0} \pmod q$
-for given matrix $\A$ and a given integer $q$.
+for a given matrix $\A$ and a given integer $q$.
 
 Of course, we have to define properly what \emph{small} means. Furthermore,
 what are the dimensions of $\A$?
@@ -119,7 +119,7 @@ solution.
 
 \begin{proof}
 We know that $\A \vec z \mod q \in \Zqn$, therefore, $|\img(\A \star \mod q)|
-\le q^n$. But that are $q^m$ different vectors in $\Zqm$, with $q^m > q^n$,
+\le q^n$. But there are $q^m$ different vectors in $\Zqm$, with $q^m > q^n$,
 thus, by the Pigeonhole principle, there must be two different vector $\vec x$
 and $\vec y$ such that $\A \vec x = \A \vec y \mod q$, hence, $\A (\vec{x - y})
 = 0 \mod q$ and if $\vec z := \vec{x - y}$ is small, it is a valid solution. To
@@ -209,7 +209,7 @@ $\lambda_1^{\infty}(\LqA) > \frac{(q/2)^{n/m} -1}{2}$ with probability $1 -
 2^{-n}$.
 \end{theorem}
 \begin{proof}
-A proof of this theorem is provided in the nine-th lecture of ~\cite{dd18}, but
+A proof of this theorem is provided in the ninth lecture of ~\cite{dd18}, but
 it is not very clear for me. Please, check it there.
 \end{proof}
 
