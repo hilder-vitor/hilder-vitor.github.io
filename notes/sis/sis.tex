@@ -337,8 +337,8 @@ $$s =\frac{q}{\gamma}\norm{S} \ge \frac{q}{\gamma}\gamma\smooth(\LB) =
 With those three results and for a suitable $\epsilon$, we see that $\vec y_i 
 \mod q$ is statistically close to uniform over $\LB/q\LB$. Remember that 
 
-$$\LB/q\LB := \left\{ \vec z + q\LB : \vec z \in \LB \right\} \equiv \left\{ 
-\vec B \vec w \in \LB : \vec w \in \Zqn \right\}.$$
+$$\LB/q\LB := \left\{ \vec z + q\LB : \vec z \in \LB\cap\Zqn \right\} \simeq 
+\left\{ \vec B \vec w \in \LB : \vec w \in \Zqn \right\}.$$
 
 Thus, saying that $\vec y_i \mod q$ is uniform over $\LB/q\LB$ means that 
 $\vec y_i \mod q = \vec B \vec w$ is uniform, so $\vec{B}^{-1}\vec y_i \mod q = 
@@ -355,12 +355,12 @@ The latter means that over the integers $\A \vec e = q\vec w$ for some $\vec w
 \in \Zn$. Hence, $\vec{B}^{-1}\vec Y\vec e = q\vec w$, then $$\vec{B}\vec w 
 =\frac{\vec Y\vec e }{q} = \vec v.$$
 
-Therefore, $\vec v$ is a integer linear combination of the basis $\vec B$, and 
+Therefore, $\vec v$ is an integer linear combination of the basis $\vec B$, and 
 then $\vec v \in \LB$.
 
 It remains to prove that $\norm{\vec v - \vec t} \le \norm{S} / g$. Actually, 
 this does not hold all the time. This is the case only if some of the non-zero 
-entries of $\vec e$ is equals to $\alpha$. So, let $e_k$ be its first 
+entries of $\vec e$ is equal to $\alpha$. So, let $e_k$ be its first 
 non-zero entry. Then, with probability $1/(2\beta m)$, the value $j$ chosen in 
 the first line is equal to $k$ and the value $\alpha$ is equal to $e_k$.
 
@@ -378,27 +378,27 @@ from $\DLs{\vec 0}$ with weights given by $\vec e / q$. Since $s \ge
 probability (the same holds for $\norm{\vec w}$), therefore
 
 $$\norm{\vec v - \vec t} \le \frac{\norm{e}s\sqrt{n}}{q} =  
-\frac{\norm{e}\sqrt{n}\norm{S}}{\gamma} = \frac{\beta\sqrt{n}\norm{S}}{\gamma} 
-= \frac{\beta\sqrt{n}\norm{S}}{g \beta \sqrt{n}} = \frac{\norm{S}}{g}.$$
+\frac{\norm{e}\sqrt{n}\norm{S}}{\gamma} \le \frac{\beta\sqrt{n}\norm{S}}{ 
+\gamma} = \frac{\beta\sqrt{n}\norm{S}}{g \beta \sqrt{n}} = \frac{\norm{S}}{g}.$$
 
 At this point, we have shown that with non-negligible probability, 
 Algorithm~\ref{alg:solveIncIVD} solves $\incIVD$. But to have a more concrete 
 idea of how much times Algorithm~\ref{alg:solveIncIVD} will be executed, let's 
 recapitulate the probabilities therein:
 
-Taking $\epsilon = 2^{-n}$ roughly gives that the statistical distance between 
-$\A$ and the uniform over $\Zqnm$ is $2^{-n}$, thus, $\vec e$ is a valid 
-solution to $\SIS$ with probability $1 - 2^{-n}$. Moreover, for such 
-$\epsilon$, the probability that $\norm{y_i} \le s\sqrt{n}$ is $1-2^{-n}$. And 
-we saw that, independently of these probabilities, 
-Algorithm~\ref{alg:solveIncIVD} works with probability $1/(2\beta m)$. 
+Taking $\epsilon = 2^{-n}$ roughly implies that the statistical distance 
+between $\A$ and the uniform distribution over $\Zqnm$ is $2^{-n}$, thus, $\vec 
+e$ is a valid solution to $\SIS$ with probability $1 - 2^{-n}$. Moreover, for 
+such $\epsilon$, the probability that $\norm{y_i} \le s\sqrt{n}$ is $1-2^{-n}$. 
+And we saw that, independently of these probabilities, 
+Algorithm~\ref{alg:solveIncIVD} works with probability at least $1/(2\beta m)$. 
 Therefore, we can conclude that Algorithm~\ref{alg:solveIncIVD} works with 
-probability 
+probability
 
 $$\left(1-\frac{1}{2^n}\right)\left(1-\frac{1}{2^n}\right)\frac{1}{2\beta m} 
 \approx \frac{1}{2\beta m}.$$
 
-And then we expect to execute Algorithm~\ref{alg:solveIncIVD} about $2\beta m$ 
+Thus we expect to execute Algorithm~\ref{alg:solveIncIVD} about $2\beta m$ 
 times in our reduction, which is polynomial in $n$, as expected.
 
 
