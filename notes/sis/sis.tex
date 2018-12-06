@@ -1,0 +1,410 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[utf8]{inputenc}
+%
+%\usepackage{epsfig}
+\usepackage{amsfonts} % classic fonts (N, Q, R, C)
+\usepackage{amsmath}  % equation, align*, \mod command
+\usepackage{amsthm}   % \theoremstyle (to define remark and definition)
+%\usepackage{amsfonts}
+%\usepackage{amssymb}
+%\usepackage{verbatim}
+
+\usepackage[a4paper,hmargin=2.2cm,vmargin=2.7cm]{geometry} % 2cm, 2.3cm
+
+
+%\usepackage{listings}
+%\usepackage{algorithm,algorithmic}
+
+% For algorithms
+%\usepackage{algorithm2e}
+\usepackage[linesnumbered,boxed,ruled,vlined]{algorithm2e}
+%\usepackage{algpseudocode}
+
+\usepackage{url}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%    My own commands
+
+\let\vec\mathbf %%%% Redefining \vec to use bold letters instead of arrow
+
+\newcommand\Z{{\mathbb Z}}
+\newcommand\Q{{\mathbb Q}}
+\newcommand\R{{\mathbb R}}
+\newcommand\Zq{{\mathbb Z}_q}
+\newcommand\Zqn{{\mathbb Z}_q^n}
+\newcommand\Zn{{\mathbb Z}^n}
+\newcommand\Zqm{{\mathbb Z}_q^m}
+\newcommand\Zm{{\mathbb Z}^m}
+\newcommand\Zqnm{{\mathbb Z}_q^{n\times m}}
+\newcommand\Znm{{\mathbb Z}^{n\times m}}
+
+\newcommand\A{{\mathbf A}}
+\newcommand\LqA{\mathcal{L}_q^{\bot}\left(\A\right)}
+\newcommand\LB{\mathcal{L}\left(\vec B\right)}
+
+\newcommand\DLs[1]{D_{\LB, s, #1}}
+
+
+\newcommand\smooth{\eta_\epsilon}
+
+\newcommand\SIS{\textbf{SIS}_{n, q, \beta, m}}
+\newcommand\SVP{\textbf{searchSVP}}
+\newcommand\gapSVP{\textbf{gapSVP}_\gamma}
+\newcommand\SIVP{\textbf{SIVP}_\gamma}
+\newcommand\incIVD{\textbf{IncIVD}_{\gamma, g}^{\smooth}}
+
+\newcommand\sample{ \xleftarrow{\text{ \$ }} }
+
+\DeclareMathOperator{\img}{\textsf{Img}}
+
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert_2}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Theorems, corolaries, etc
+ 
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Title Page
+\title{The SIS problem}
+\author{Hilder Vítor Lima Pereira}
+\date{November, 2018}
+
+
+
+\begin{document}
+\maketitle
+
+%\begin{abstract}
+%\end{abstract}
+
+\section{Introduction}
+
+SIS stands to Small Integer Solutions and, informally, it is the problem of
+finding small nonzero vector $\vec{z}$ such that $\vec{ A z} = \vec{0} \pmod q$
+for given matrix $\A$ and a given integer $q$.
+
+Of course, we have to define properly what \emph{small} means. Furthermore,
+what are the dimensions of $\A$?
+
+So, let's use always $\A \in \Zqnm$, therefore, $\vec z \in \Zqm$, and let's
+say that $\vec z$ is small if $\norm{\vec z} \le \beta$, for a given $\beta$.
+Moreover, $\A$ is always chosen uniformly from $\Zqnm$.
+
+Considering all this, the SIS problem is defined formally as follows:
+
+\begin{definition}[Short Integer Solutions: $\SIS$] Given a uniformly random
+matrix $\A \in \Zqnm$, find a vector $\vec z \in \Zm \setminus \{\vec 0\} $
+such that
+$\norm{\vec z} \le \beta$ and $\A \vec z = \vec 0 \mod q$.
+\end{definition}
+
+Notice that $\A \vec z = \sum_{i=1}^{m} z_i \vec{a}_i$, so, we are searching
+for a linear combination of the columns of $\A$ that yields a zero. Then, if
+$m<n$ or $m=n$, it is likely that the only possible $\vec z$ is the zero vector
+(unless the columns of $\A$ are linearly dependent). Therefore, we should use
+$m > n$. But how much bigger?
+
+\begin{theorem}
+If $\beta\ge \sqrt{m}$ and $m \ge n\log q$, then $\SIS$ has at least one 
+solution.
+\end{theorem}
+
+\begin{proof}
+We know that $\A \vec z \mod q \in \Zqn$, therefore, $|\img(\A \star \mod q)|
+\le q^n$. But that are $q^m$ different vectors in $\Zqm$, with $q^m > q^n$,
+thus, by the Pigeonhole principle, there must be two different vector $\vec x$
+and $\vec y$ such that $\A \vec x = \A \vec y \mod q$, hence, $\A (\vec{x - y})
+= 0 \mod q$ and if $\vec z := \vec{x - y}$ is small, it is a valid solution. To
+guarantee that $\vec z$ is small, we can use the same argument taking $\vec x$
+and $\vec y$ as small vectors.
+
+Hence, consider the set $\mathbb{B}_m := \{0, 1\}^m$. There are $2^m$ vectors
+in it. By taking $2^m > q^n$ and $\vec x, \vec y \in \mathbb{B}_m$, we have
+again that $\vec z := \vec{x - y}$ is the right kernel of $\A$ but this time
+with $\norm{\vec z} = \sqrt{\sum_{i=0}^{m} (x_i - y_i)^2} \le
+\sqrt{\sum_{i=0}^{m} 1^2} = \sqrt{m}$.
+
+Therefore, by setting $\beta \ge \sqrt{m}$ and $m \ge n\log q$, $\SIS$ always 
+has a solution.
+\end{proof}
+
+
+\begin{theorem}
+$\SIS$  can only become easier as $m$ increases.
+\end{theorem}
+\begin{proof}
+If $\vec z \in \Zm$ is a solution to $\SIS$, then for any $m' > m$, the vector
+$\vec z := (\vec z , \vec 0^{m' - m})$ is a solution to \textbf{SIS}$_{n, q,
+\beta, m'}~$.
+\end{proof}
+
+\subsection{The lattice of candidate solutions of SIS}
+
+Consider the set:
+
+$$ \LqA := \{ \vec z \in \Zm : \A \vec z = \vec 0 \mod q \}$$
+
+If $\vec x, \vec y \in \LqA$, then $\A(\vec x + \vec y) = \A\vec x + \A\vec y =
+\vec 0 \mod q$, hence, this set is closed to the addition with $\vec 0$ being
+the identity element therein. Thus, it is a group. Furthermore, it is a
+discrete subgroup of $\mathbb{R}^m$, therefore, $\LqA$ is a lattice.
+
+Solutions of $\SIS$ are small vectors of $\LqA$, so there is already a 
+connection between this problem and the $\SVP$ problem.
+
+In the $\SIS$ problem, since $m > n$ and all the entries of $\A$ are random, 
+$\A$
+has $n$ linearly independent columns with very high probability, namely, bigger
+than $1 - 1/(q^{m-n})$~\cite{Kudo16}. Thus, we can write $\A = [\A_1 | \A_2]$
+where $\A_1 \in \Zq^{n\times n}$ is invertible modulo $q$ and $\A_2 \in
+\Zq^{n\times (m-n)}$ is a matrix containing the last columns. By doing so, we
+see that following matrix is a basis of $\LqA$:
+
+$$
+\vec{B} =
+    \begin{pmatrix}
+    ~q\cdot\vec{I}_n~  & -\A_1^{-1}\A_2 \\
+    ~\vec 0~  & \vec{I}_{m-n}
+    \end{pmatrix} \in \Z^{m \times m}
+$$
+
+In this case, the volume of $\LqA$ is $\det(\vec B) = \det(q\vec{I}_n)
+\det({\vec I}_{m-n}) = q^n$ and $\LqA$ is a full-rank lattice of dimension $m$.
+
+\begin{theorem}[Upper-bounds to shortest vectors]
+For large enough $m$ and $q$, the two following inequalities hold except with
+inverse exponential probability:
+\begin{itemize}
+\item $\lambda_1^{\infty}(\LqA) \le q^{n/m}$
+\item $\lambda_1(\LqA) \le \sqrt{m}\cdot q^{n/m}$
+\end{itemize}
+\end{theorem}
+\begin{proof}
+As discussed above, if $\A$ has $n$ linearly independent columns, then
+$\det(\LqA) = q^n$, thus, by Minkowski's theorems,
+\begin{itemize}
+\item $\lambda_1^{\infty}(\LqA) \le \det(\LqA)^{1/m} = q^{n/m}$
+\item $\lambda_1(\LqA) \le \sqrt{m}\cdot \det(\LqA)^{n/m} = \sqrt{m}\cdot
+q^{n/m}$.
+\end{itemize}
+
+Moreover, it happens with probability $1- 1/(q^{m-n})$, which for large enough
+parameters, is clearly exponentially close to $1$.
+\end{proof}
+
+(If you want to know more about Minkowski's theorems, including simple proofs,
+I suggest that you read the second chapter of~\cite{mic14}).
+
+\begin{theorem}[Lower bound to shortest vectors]
+If $q$ is prime, then for any uniformly random $\A$, it holds that
+$\lambda_1^{\infty}(\LqA) > \frac{(q/2)^{n/m} -1}{2}$ with probability $1 -
+2^{-n}$.
+\end{theorem}
+\begin{proof}
+A proof of this theorem is provided in the nine-th lecture of ~\cite{dd18}, but
+it is not very clear for me. Please, check it there.
+\end{proof}
+
+At light if this theorem, we see that  $\SIS$ is actually impossible to solve if
+$\beta$ is much smaller than $q^{n/m}$. Therefore, we should use $\beta >
+q^{n/m}$.
+
+On the other hand, if $\beta = \gamma \cdot q^{n/m}$ for an exponential large
+$\gamma$, then we can solve $\SIS$ in polynomial time (for instance, using the
+LLL algorithm).
+
+Thus, the alternatives are $\beta = \text{sub-exponential}(n)q^{n/m}$ (which
+seems risk) and $\beta = \text{poly}(n) q^{n/m}$. Hence, $\SIS$ is usually
+defined using $\beta$ polynomially proportional to $q^{n/m}$.
+
+\section{Average- to worst-case reduction}
+
+There are several average-case to worst-case reductions from $\SIS$ to hard
+lattices problems. The actual proofs are complex and must be checked in
+the original articles. Here, we will see an outline of the proof presented 
+in~\cite{gpv07}. If you want an even higher level presentation of the 
+reductions, you can check~\cite{peikert16}.
+
+So let's first define the hard lattice problems:
+%
+%\begin{definition}[Gap Shortest Vector Problem: \gapSVP]
+%Given a basis $\vec B  \in \Znm$ and a $r \in \mathbb{Q}$, decide whether
+%$\lambda_1(\mathcal{L}(\vec B)) \le r$ or $\lambda_1(\mathcal{L}(\vec B)) >
+%\gamma r$, for an approximation parameter $\gamma:= \gamma(n) \ge 1$.
+%\end{definition}
+
+
+\begin{definition}[Approximate Shortest Independent Vectors Problem: $\SIVP$]
+Given a basis $\vec B$ of a full-rank $n$-dimensional lattice $\mathcal{L}$,
+find $n$ linearly independent vectors $\vec s_1, ..., \vec s_n \in \mathcal{L}$
+such that $\norm{\vec s_i} \le \gamma\cdot\lambda_n(\mathcal{L})$.
+\end{definition}
+
+
+\begin{definition}[Incremental Independent Vectors Decoding: $\incIVD$]
+Given a basis $\vec B$ of a full-rank $n$-dimensional lattice, a full-rank set 
+of lattice vectors $S \subset \LB$, such that $\norm{S} \ge \gamma\smooth$, 
+and target vector $\vec t \in \R^n$, the goal is to output $\vec v \in \LB$ such
+that $\norm{\vec v - \vec t} \le \norm{S} / g$.
+\end{definition}
+
+Our goal is to show that if one can solve $\SIS$ with non-negligible 
+probability, than one can solve any instance of $\SIVP$ (even the hardest 
+ones). But we will first show that $\SIS$ can be used to solve $\incIVD$. Then, 
+we have to show a reduction from $\SIVP$ to $\incIVD$.
+
+More precisely, we have the following:
+
+\begin{theorem}
+For any $g := g(n) > 1$ and negligible $\epsilon := \epsilon(n)$, there is a 
+probabilistic polynomial-time reduction from $\incIVD$ in the worst case to 
+$\SIS$ on the average that works with non-negligible probability, where $\gamma 
+:= \gamma(n) = g \beta \sqrt{n}$, $q := q(n) \in \omega(\gamma \sqrt{\log n})$, 
+and $m$ and $\beta$ are polynomial functions of $n$.
+\end{theorem}
+
+The algorithm for this reduction is actually just a loop executing 
+Algorithm~\ref{alg:solveIncIVD} until it works. In which follows, we show that  
+Algorithm~\ref{alg:solveIncIVD} works with non-negligible probability, 
+therefore, we have to perform only a negligible number of iterations of this 
+loop.
+
+\begin{algorithm}
+\DontPrintSemicolon
+\KwIn{A basis $\vec B$, a set of vectors $S$, and a target vector $\vec t$ that 
+are a valid instance of $\incIVD$, and an oracle $\mathcal{O}$ to the 
+$\SIS$ problem, with $m \ge n\log q$.}
+\KwOut{A vector $\vec v \in \mathcal{L}(\vec B)$ that is a solution to 
+$\incIVD$.}
+\SetKwComment{Comment}{$\triangleright$\ }{}
+
+$j \sample \{1,...,m\}$
+
+$\alpha \sample \{ -\beta, ..., \beta \} \setminus \{0\}$
+
+$\vec c_j := \frac{q}{\alpha}\vec t$
+
+$s:= \frac{q}{\gamma}\norm{S}$
+
+\For{$i = 1$ \emph{ until } $m$}{
+    \lIf{$i = j$}{
+		$\vec y_i \gets \DLs{\vec c_j}$
+    }
+    \lElse{
+		$\vec y_i \gets \DLs{\vec 0}$
+    }
+}
+
+$\vec Y :=\left[\vec y_1 \quad \dots \quad \vec y_m \right] \in \R^{n \times m}$
+
+$\vec A := \vec{B}^{-1} \vec Y \mod q \in \Zqnm$ \Comment*[r]{The oracle 
+$\mathcal{O}$ expects 
+$\A$ to be uniform in $\Zqnm$.}
+
+$\vec e \gets \mathcal{O}(\A)$ \Comment*[r]{$\vec e$ should satisfy $\norm{\vec 
+e} \le \beta$ and $\A\vec e = \vec 0 \mod q$.}
+
+$\vec v := (\vec Y \vec e) / q$
+
+\Return{$\vec v$}
+\caption{{\sc SolveIncIVD}}
+\label{alg:solveIncIVD}
+\end{algorithm}
+
+The first important thing to do in order to analyze 
+algorithm~\ref{alg:solveIncIVD} is to prove that $\A$ is statistically close to 
+a uniform in $\Zqnm$.
+
+This follows from the properties of the smoothing parameter $\smooth$. As 
+stated in corollary 2.8 of~\cite{gpv07}, if $0 < \epsilon < \frac 1 2$, then 
+for any $s \ge \smooth(q\LB)$ and any $\vec c \in \R^n$, the statistical 
+distance of $\DLs{\vec c} \mod q\LB$ and $\LB \mod q\LB$ is smaller than 
+$2\epsilon$.
+
+Moreover, it is easy to check that $q \cdot \smooth(\LB) = \smooth(q\LB)$. And 
+by definition, 
+$$s =\frac{q}{\gamma}\norm{S} \ge \frac{q}{\gamma}\gamma\smooth(\LB) = 
+\smooth(q\LB).$$
+
+With those three results and for a suitable $\epsilon$, we see that $\vec y_i 
+\mod q$ is statistically close to uniform over $\LB/q\LB$. Remember that 
+
+$$\LB/q\LB := \left\{ \vec z + q\LB : \vec z \in \LB \right\} \equiv \left\{ 
+\vec B \vec w \in \LB : \vec w \in \Zqn \right\}.$$
+
+Thus, saying that $\vec y_i \mod q$ is uniform over $\LB/q\LB$ means that 
+$\vec y_i \mod q = \vec B \vec w$ is uniform, so $\vec{B}^{-1}\vec y_i \mod q = 
+\vec w$ is uniform over $\Zqn$. Therefore, $\A = [\vec{B}^{-1}\vec y_1 \quad 
+\dots \quad \vec{B}^{-1}\vec y_m]$ is statistically close to a uniform in 
+$\Zqnm$.
+
+Now, we know that the $\SIS$ oracle receives a valid input (with 
+overwhelming probability), hence $\vec e$ is a valid solution (with 
+non-negligible probability), i.e., $\norm{\vec e} \le \beta$ and $\A \vec e = 
+\vec 0 \mod q$. 
+
+The latter means that over the integers $\A \vec e = q\vec w$ for some $\vec w 
+\in \Zn$. Hence, $\vec{B}^{-1}\vec Y\vec e = q\vec w$, then $$\vec{B}\vec w 
+=\frac{\vec Y\vec e }{q} = \vec v.$$
+
+Therefore, $\vec v$ is a integer linear combination of the basis $\vec B$, and 
+then $\vec v \in \LB$.
+
+It remains to prove that $\norm{\vec v - \vec t} \le \norm{S} / g$. Actually, 
+this does not hold all the time. This is the case only if some of the non-zero 
+entries of $\vec e$ is equals to $\alpha$. So, let $e_k$ be its first 
+non-zero entry. Then, with probability $1/(2\beta m)$, the value $j$ chosen in 
+the first line is equal to $k$ and the value $\alpha$ is equal to $e_k$.
+
+Also, remember that for $i \not=j$, we have $\vec y_i \in \LB$ and we can 
+write $\vec y_j =  \vec{w} + \frac{q}{\alpha} \vec t$ with $\vec w \in \LB$. 
+Therefore, if $e_j = \alpha$, then
+
+$$\vec v - \vec t =  \frac{1}{q} \cdot \vec Y \vec e = \frac{1}{q} \cdot \left( 
+\sum_{i\not=j}\vec y_ie_i + \left(\vec{w} + \frac{q}{\alpha}\vec t\right) e_j 
+\right) - \vec t = \sum_{i\not=j}\vec y_i\frac{e_i}{q} + \vec{w}\frac{e_j}{q}.$$
+
+Hence, in the right-hand side we have a weighted sum of lattice vectors sampled 
+from $\DLs{\vec 0}$ with weights given by $\vec e / q$. Since $s \ge 
+\smooth(\LB)$, we have $\norm{\vec y_i} \le s\sqrt{n}$ with overwhelming 
+probability (the same holds for $\norm{\vec w}$), therefore
+
+$$\norm{\vec v - \vec t} \le \frac{\norm{e}s\sqrt{n}}{q} =  
+\frac{\norm{e}\sqrt{n}\norm{S}}{\gamma} = \frac{\beta\sqrt{n}\norm{S}}{\gamma} 
+= \frac{\beta\sqrt{n}\norm{S}}{g \beta \sqrt{n}} = \frac{\norm{S}}{g}.$$
+
+At this point, we have shown that with non-negligible probability, 
+Algorithm~\ref{alg:solveIncIVD} solves $\incIVD$. But to have a more concrete 
+idea of how much times Algorithm~\ref{alg:solveIncIVD} will be executed, let's 
+recapitulate the probabilities therein:
+
+Taking $\epsilon = 2^{-n}$ roughly gives that the statistical distance between 
+$\A$ and the uniform over $\Zqnm$ is $2^{-n}$, thus, $\vec e$ is a valid 
+solution to $\SIS$ with probability $1 - 2^{-n}$. Moreover, for such 
+$\epsilon$, the probability that $\norm{y_i} \le s\sqrt{n}$ is $1-2^{-n}$. And 
+we saw that, independently of these probabilities, 
+Algorithm~\ref{alg:solveIncIVD} works with probability $1/(2\beta m)$. 
+Therefore, we can conclude that Algorithm~\ref{alg:solveIncIVD} works with 
+probability 
+
+$$\left(1-\frac{1}{2^n}\right)\left(1-\frac{1}{2^n}\right)\frac{1}{2\beta m} 
+\approx \frac{1}{2\beta m}.$$
+
+And then we expect to execute Algorithm~\ref{alg:solveIncIVD} about $2\beta m$ 
+times in our reduction, which is polynomial in $n$, as expected.
+
+
+\bibliographystyle{alpha}
+\bibliography{sis.bib}
+
+\end{document}
+
+
