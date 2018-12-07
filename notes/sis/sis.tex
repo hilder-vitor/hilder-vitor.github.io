@@ -112,10 +112,10 @@ $m<n$ or $m=n$, it is likely that the only possible $\vec z$ is the zero vector
 (unless the columns of $\A$ are linearly dependent). Therefore, we should use
 $m > n$. But how much bigger?
 
-\begin{theorem}
+\begin{lemma}
 If $\beta\ge \sqrt{m}$ and $m \ge n\log q$, then $\SIS$ has at least one 
 solution.
-\end{theorem}
+\end{lemma}
 
 \begin{proof}
 We know that $\A \vec z \mod q \in \Zqn$, therefore, $|\img(\A \star \mod q)|
@@ -137,14 +137,14 @@ has a solution.
 \end{proof}
 
 
-\begin{theorem}
+\begin{remark}
 $\SIS$  can only become easier as $m$ increases.
-\end{theorem}
-\begin{proof}
+\end{remark}
+
 If $\vec z \in \Zm$ is a solution to $\SIS$, then for any $m' > m$, the vector
 $\vec z := (\vec z , \vec 0^{m' - m})$ is a solution to \textbf{SIS}$_{n, q,
 \beta, m'}~$.
-\end{proof}
+
 
 \subsection{The lattice of candidate solutions of SIS}
 
@@ -213,7 +213,7 @@ A proof of this theorem is provided in the ninth lecture of ~\cite{dd18}, but
 it is not very clear for me. Please, check it there.
 \end{proof}
 
-At light if this theorem, we see that  $\SIS$ is actually impossible to solve if
+At light of this theorem, we see that  $\SIS$ is actually impossible to solve if
 $\beta$ is much smaller than $q^{n/m}$. Therefore, we should use $\beta >
 q^{n/m}$.
 
@@ -401,6 +401,9 @@ $$\left(1-\frac{1}{2^n}\right)\left(1-\frac{1}{2^n}\right)\frac{1}{2\beta m}
 Thus we expect to execute Algorithm~\ref{alg:solveIncIVD} about $2\beta m$ 
 times in our reduction, which is polynomial in $n$, as expected.
 
+A reduction from $\incIVD$ to $\SIVP$ preserving the lattice dimension and the 
+approximation factor $\gamma$ can be straightforwardly adapted from the 
+reduction presented in Lemma 4.6 of~\cite{mic07}.
 
 \bibliographystyle{alpha}
 \bibliography{sis.bib}
