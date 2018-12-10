@@ -1,5 +1,50 @@
+html{
+height:100%;
+}
+
 body{
 font-family: trebuchet ms,sans-serif;
+width: 900px;
+height:100%;
+margin:20px auto;
+}
+
+
+/* Everything inside the body is inside this div */
+#bodyDiv{
+height:100%;
+}
+
+/* This div contains the left_menu and the content */
+#container{
+	width:100%;
+	height:90%;
+	float:left; 
+	background-color:#EEF6F6;
+}
+
+#left_menu 
+{
+	text-decoration:  none;
+	display: block;
+	float:left;
+	background-color:#777777;
+	width:28%;
+	height:100%
+}
+
+#content{
+	float:left;
+	height:100%;
+	width: 70%;
+	margin-left:10px;
+}
+
+#footer {
+	margin-top:5px;
+	width:900px;
+	background-color:#EEF6F6;
+	float: left;
 }
 
 ul
@@ -21,37 +66,7 @@ a{
 	color:white;
 }
 
-#container{
-	width:100%;
-	height:100%;
-	float:left; 
-	background-color:#EEF6F6;
-}
 
-#left_menu 
-{
-	text-decoration:  none;
-	display: block;
-	float:left;
-	background-color:#777777;
-	width:270px;
-	height:100%
-}
-
-#content{
-	float:left;
-	height:100%;
-	width: 620px;
-	margin-left:10px;
-}
-
-
-#footer {
-	margin-top:5px;
-	width:900px;
-	background-color:#EEF6F6;
-	float: left;
-}
 
 #left_menu .current_page_item {
 	/*background: #2980b9;*/
