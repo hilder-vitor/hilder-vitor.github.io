@@ -88,12 +88,10 @@ margin:auto;
 }
 
 .titleItem{
-	padding-left:10px;
+	padding-left:5px;
 	padding-top:4px;
 	padding-bottom:4px;
-	margin-left:5px;
-	/*width:200px;*/
-	background-color:#555555;
+	background-color:rgb(0, 140, 166);
 	color:white;
 }
 
