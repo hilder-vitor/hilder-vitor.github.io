@@ -1,44 +1,71 @@
+
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title> Some notes on several academic topics </title>
-		<script type="text/x-mathjax-config">
+		<title> Teaching. </title>
+		<!-- <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 		    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 			});
 		</script>
 		<script type="text/javascript" async
   src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
-		</script>
+		</script> -->
 
-		<link href="css/default.css" rel="stylesheet" type="text/css" media="all">
+		<link href="css/style.css" rel="stylesheet" type="text/css" media="all">
 	</head>
 
-	<body>
-		<div id='bodyDiv'>
-		<div id='container'>
-		<div id='left_menu'>
-			<script src="left_menu.js"></script>	
-			<script> document.getElementById("li_not").className="current_page_item"; </script>
-		</div>
+<body>
+  <div id="container">
+    <div id="menu">
+		 <ul>
+			<li><a href="index.html" accesskey="1">Home</a></li>
+			<li>
+				<a href="publication.html" accesskey="2" title="">
+					Publications
+				</a>
+			</li>
+			<li >
+				<a href="teaching.html" accesskey="3" title="">
+					Teaching
+				</a>
+			</li>
+			<li>
+				<a href="#"  class="active" accesskey="4" title="">
+					Some notes
+				</a>
+			</li>
+			<li>
+				<a href="miscellaneous.html" accesskey="5" title="">
+					Miscellaneous
+				</a>
+			</li>
 
-		<!-- END MENU -->
-		<!-- START CONTENT -->
+			<li style="float:right">
+				<a href="contact.html" accesskey="6" title="">
+					Contact
+				</a>
+			</li>
+		</ul>
+    </div>
+    <div id="mainBody">
+		<h4 class="titleItem"> Cryptography </h4>
+		<ul>
+		
+		<li> <a href="notes/lattices/index.html">Lattice problems</a></li>
+		<li> <a href="notes/mmaps/index.html">Multilinear maps</a></li>
+		<li> <a 
+		href="https://drive.google.com/open?id=1V3aI3AP2-qPzlbFNjEuuM_2pIQ87tXcR"
+		target="_blank">Short Integer Solution problem</a>
+		</li>
+		
+		</ul>
 
-		<div id='content'>
-			<h4 class="titleItem"> Cryptography </h4>
-			<ul>
-				<li>- <a href="notes/lattices/index.html">Lattice problems</a></li>
-				<li>- <a href="notes/mmaps/index.html">Multilinear maps</a></li>
-				<li>- <a href="https://drive.google.com/open?id=1V3aI3AP2-qPzlbFNjEuuM_2pIQ87tXcR" target="_blank">Short Integer Solution problem</a></li>
-			</ul>
+    </div> <!-- end mainBody -->
+    <div id='footer' >
+ 		<script src="footer.js"></script>
+	</div>
 
-		</div>
-		</div>
-		<div id='footer' >
- 			<script src="footer.js"></script>
-		</div>
-		</div>
-	</body>
+   </div> <!-- end div container -->
 </html>

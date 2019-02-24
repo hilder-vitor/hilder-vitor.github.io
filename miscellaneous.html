@@ -1,42 +1,65 @@
+
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title> Miscellaneous. </title>
-		<script type="text/x-mathjax-config">
+		<!-- <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 		    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 			});
 		</script>
-		<!-- <script type="text/javascript" async
-  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML" async>
+		<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 		</script> -->
 
-		<link href="css/default.css" rel="stylesheet" type="text/css" media="all">
+		<link href="css/style.css" rel="stylesheet" type="text/css" media="all">
 	</head>
 
-	<body>
-		<div id='bodyDiv'>
-		<div id='container'>
-		<div id='left_menu'>
-			<script src="left_menu.js"></script>	
-			<script> document.getElementById("li_mis").className="current_page_item"; </script>
-		</div>
+<body>
+  <div id="container">
+    <div id="menu">
+		 <ul>
+			<li><a href="index.html" accesskey="1">Home</a></li>
+			<li>
+				<a href="publication.html" accesskey="2" title="">
+					Publications
+				</a>
+			</li>
+			<li >
+				<a href="teaching.html"  accesskey="3" title="">
+					Teaching
+				</a>
+			</li>
+			<li>
+				<a href="notes.html" accesskey="4" title="">
+					Some notes
+				</a>
+			</li>
+			<li>
+				<a href="#" class="active" accesskey="5" title="">
+					Miscellaneous
+				</a>
+			</li>
 
-		<!-- END MENU -->
-		<!-- START CONTENT -->
+			<li style="float:right">
+				<a href="contact.html" accesskey="6" title="">
+					Contact
+				</a>
+			</li>
+		</ul>
+    </div>
+    <div id="mainBody">
 
-		<div id='content'>
-			<h4 class="titleItem"> Languages: </h4>
-			<ul>
-				<li>- <a href="basic_languages/perfekt.html">German conjugation: Perfekt.</a></li>
-			</ul>
+		<h4 class="titleItem"> Languages</h4>
+		<p> <a
+			href="basic_languages/perfekt.html"> German conjugation: Perfekt</a>
+		</p>
 
-		</div>
-		</div>
-		<div id='footer' >
- 			<script src="footer.js"></script>
-		</div>
-		</div>
-	</body>
+    </div> <!-- end mainBody -->
+    <div id='footer' >
+ 		<script src="footer.js"></script>
+	</div>
+
+   </div> <!-- end div container -->
 </html>

@@ -1,35 +1,70 @@
+
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title> Teaching. </title>
-		<script type="text/x-mathjax-config">
+		<!-- <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 		    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 			});
 		</script>
-		<link href="css/default.css" rel="stylesheet" type="text/css" media="all">
+		<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+		</script> -->
+
+		<link href="css/style.css" rel="stylesheet" type="text/css" media="all">
 	</head>
 
-	<body>
-		<div id='bodyDiv'>
-		<div id='container'>
-		<div id='left_menu'>
-			<script src="left_menu.js"></script>
-			<script> document.getElementById("li_tea").className="current_page_item"; </script>
-		</div>
-		<!-- END MENU -->
-		<!-- START CONTENT -->
+<body>
+  <div id="container">
+    <div id="menu">
+		 <ul>
+			<li><a href="index.html" accesskey="1">Home</a></li>
+			<li>
+				<a href="publication.html" accesskey="2" title="">
+					Publications
+				</a>
+			</li>
+			<li >
+				<a href="#" class="active" accesskey="3" title="">
+					Teaching
+				</a>
+			</li>
+			<li>
+				<a href="notes.html" accesskey="4" title="">
+					Some notes
+				</a>
+			</li>
+			<li>
+				<a href="miscellaneous.html" accesskey="5" title="">
+					Miscellaneous
+				</a>
+			</li>
 
+			<li style="float:right">
+				<a href="contact.html" accesskey="6" title="">
+					Contact
+				</a>
+			</li>
+		</ul>
+    </div>
+    <div id="mainBody">
 
-		<div id='content'>
-			<h4 class="titleItem"> 2018 </h4>
-			<p> Practical sections of <a href="teaching/algorithms_complexity_2018.html"> Algorithms and Complexity </a> and <a href="teaching/security_1_2018.html"> Security 1</a>.
-		</div>
-		</div>
-		<div id='footer' >
- 			<script src="footer.js"></script>
-		</div>
-		</div>
-	</body>
+		<h4 class="titleItem"> 2019 - Summer Semester</h4>
+		<p> Practical sections of <a
+			href="teaching/algorithms_complexity_2019.html"> Algorithms and
+			Complexity</a>.
+		</p>
+
+		<h4 class="titleItem"> 2018 - Winter Semester</h4>
+		<p> Practical sections of <a href="teaching/algorithms_complexity_2018.html"> Algorithms and Complexity </a> and <a href="teaching/security_1_2018.html"> Security 1</a>.
+		</p>
+
+    </div> <!-- end mainBody -->
+    <div id='footer' >
+ 		<script src="footer.js"></script>
+	</div>
+
+   </div> <!-- end div container -->
 </html>
