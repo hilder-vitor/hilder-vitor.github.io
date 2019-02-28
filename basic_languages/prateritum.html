@@ -238,8 +238,8 @@ function show_final_message(){
 	"<br/>"+
 	"<p> You have correctly answered <b>" + percentual + "%</b> of the questions.</p>"+
 	"<br/>"+
-	"<p> Click on ''Reload'' to start practicing again </p>"+
-	"<button href='#' class='btn' onclick='location.reload();'>Reload</button>"
+	"<p> Click on ''Reload'' to practice with new verbs. </p>"+
+	"<button href='#' class='btn' id='btnReload' onclick='location.reload();'>Reload</button>"
 }
 
 function load_new_verb() {
@@ -258,11 +258,9 @@ function load_new_verb() {
 	}else{
 		verb = verbs[current_verb]
 		document.getElementById("p_infinitive").innerHTML = verb.i;
+		document.getElementById("input_answer").value = "";
+		document.getElementById("input_answer").focus()
 	}
-	
-	document.getElementById("input_answer").value = "";
-	document.getElementById("input_answer").focus()
-
 }
 
 function update_div_score(){
@@ -337,7 +335,7 @@ function verify_answer() {
 					<hr>
 					<div style="height:250px" >
 						<div id="div_form" style="background-color:LightBlue; padding:10px; height:200px; float: left" >
-							<b> <p id="p_infinitive"> Ops...    </p> </b>
+							<b> <p id="p_infinitive" style="text-align:center"> Ops...    </p> </b>
 
 							<p> Ich <input style="width:200px" type="text" id="input_answer" />.</p>
 
@@ -377,13 +375,20 @@ function verify_answer() {
 			document.addEventListener('keypress', function (e) {
 
 				if (ENTER == e.keyCode) {
-					if (document.getElementById("btn_new").style.visibility == "visible"){
+					btnNew = document.getElementById("btn_new")
+					// check if the button to load new verb is on the screen
+					if (btnNew != null && btnNew.style.visibility == "visible"){
 						load_new_verb()
-					}else{ //	btn_check is active 
-						verify_answer()
+					}else{
+						//	test if btn_check is active
+						btnCheck = document.getElementById("btn_check")
+						if (btnCheck != null && btnCheck.style.visibility == "visible"){
+							verify_answer()
+						}else{ // btnReload is active
+							location.reload()
+						}
 					}
 				}
-			
 			})
 		</script>
 	</body>
