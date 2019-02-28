@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>Präteritum - Deutsch</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="Hilder Vítor Lima Pereira">
+
+		<!-- icons -->
+		<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+		<link rel="shortcut icon" href="favicon.ico">
+
+		<!-- Override CSS file - add your own CSS rules -->
+		<link rel="stylesheet" href="assets/css/styles.css">
+
+<script>
+/*******************************************************
+A event lister to the ENTER KEY is created in the end of
+this page. Check the last <script> section.
+*******************************************************/
+
+
+// shuffles the given vector of length n
+function shuffle(vec, n) {
+	for (var i = n - 1; i > 0; i--) {
+		var j = Math.floor(Math.random() * (i + 1));
+		var temp = vec[i];
+		vec[i] = vec[j];
+		vec[j] = temp;
+	}
+	return vec
+}
+
+/* i -> infinitive, prat -> 'präteritum', t -> english translation */
+verbs =  [ {i:'anfangen', prat: 'fing an', t: 'to begin'},
+           {i:'antworten', prat: 'antwortete', t: 'to answer, to reply'},
+           {i:'arbeiten', prat: 'arbeitete', t: 'to work'},
+           {i:'aufwachen', prat: 'wachte auf', t: 'to wake up'},
+           {i:'aussehen', prat: 'sah aus', t: 'to look like'},
+           {i:'baden', prat: 'badete', t: 'to bathe'},
+           {i:'bauen', prat: 'baute', t: 'to build'},
+           {i:'beeilen', prat: 'beeilte', t: 'to hurry'},
+           {i:'beginnen', prat: 'begann', t: 'to begin'},
+           {i:'bekommen', prat: 'bekam', t: 'to get, receive'},
+           {i:'bestellen', prat: 'bestellte', t: 'to order'},
+           {i:'besuchen', prat: 'besuchte', t: 'to visit'},
+           {i:'beten', prat: 'betete', t: 'to pray'},
+           {i:'bewerben', prat: 'bewarb', t: 'to apply'},
+           {i:'bezahlen', prat: 'bezahlte', t: 'to pay for'},
+           {i:'biegen', prat: 'bog', t: 'to turn, to bend'},
+           {i:'bieten', prat: 'bot', t: 'to offer'},
+           {i:'bitten', prat: 'bat', t: 'to ask for'},
+           {i:'bleiben', prat: 'blieb', t: 'to stay'},
+           {i:'blicken', prat: 'blickte', t: 'to look, glance'},
+           {i:'brauchen', prat: 'brauchte', t: 'to need, use'},
+           {i:'brechen', prat: 'brach', t: 'to break'},
+           {i:'bringen', prat: 'brachte', t: 'to bring'},
+           {i:'bürsten', prat: 'bürstete', t: 'to brush (hair) or clean with a brush'},
+           {i:'danken', prat: 'dankte', t: 'to thank'},
+           {i:'dauern', prat: 'dauerte', t: 'to last'},
+           {i:'denken', prat: 'dachte', t: 'to think'},
+           {i:'diskutieren', prat: 'diskutierte', t: 'to discuss'},
+           {i:'drücken', prat: 'drückte', t: 'to press'},
+           {i:'duschen', prat: 'duschte', t: 'to shower'},
+           {i:'empfehlen', prat: 'empfahl', t: 'to recommend'},
+           {i:'entscheiden', prat: 'entschied', t: 'to decide'},
+           {i:'entschuldigen', prat: 'entschuldigte', t: 'to excuse oneself'},
+           {i:'entspannen', prat: 'entspannte', t: 'to relax'},
+           {i:'erinnern', prat: 'erinnerte', t: 'to remember'},
+           {i:'erkennen', prat: 'erkannte', t: 'to recognize'},
+           {i:'erklären', prat: 'erklärte', t: 'to explain'},
+           {i:'erlauben', prat: 'erlaubte', t: 'to allow, permit'},
+           {i:'erleben', prat: 'erlebte', t: 'to experience'},
+           {i:'erzählen', prat: 'erzählte', t: 'to tell about'},
+           {i:'essen', prat: 'aß', t: 'to eat'},
+           {i:'fahren', prat: 'fuhr', t: 'to drive, to go'},
+           {i:'fallen', prat: 'fiel', t: 'to fall'},
+           {i:'fangen', prat: 'fing', t: 'to catch'},
+           {i:'faulenzen', prat: 'faulenzte', t: 'to be lazy'},
+           {i:'fehlen', prat: 'fehlte', t: 'to be missing'},
+           {i:'feiern', prat: 'feierte', t: 'to celebrate'},
+           {i:'finden', prat: 'fand', t: 'to find'},
+           {i:'fliegen', prat: 'flog', t: 'to fly'},
+           {i:'folgen', prat: 'folgte', t: 'to follow'},
+           {i:'fotografieren', prat: 'fotografierte', t: 'to photograph'},
+           {i:'fragen', prat: 'fragte', t: 'to ask'},
+           {i:'freuen', prat: 'freute', t: 'to be happy'},
+           {i:'fühlen', prat: 'fühlte', t: 'to feel'},
+           {i:'geben', prat: 'gab', t: 'to give'},
+           {i:'gefallen', prat: 'gefiel', t: 'to be pleasing, like'},
+           {i:'gehen', prat: 'ging', t: 'to go'},
+           {i:'gewinnen', prat: 'gewann', t: 'to winn'},
+           {i:'glauben', prat: 'glaubte', t: 'to believe, think'},
+           {i:'gratulieren', prat: 'gratulierte', t: 'to congratulate'},
+           {i:'haben', prat: 'hatte', t: 'to have'},
+           {i:'halten', prat: 'hielt', t: 'to stop, hold'},
+           {i:'handeln', prat: 'handelte', t: 'to deal with'},
+           {i:'heiraten', prat: 'heiratete', t: 'to marry'},
+           {i:'heißen', prat: 'hieß', t: 'to be called'},
+           {i:'helfen', prat: 'half', t: 'to help'},
+           {i:'hoffen', prat: 'hoffte', t: 'to hope'},
+           {i:'holen', prat: 'holte', t: 'to fetch'},
+           {i:'hören', prat: 'hörte', t: 'to hear, to listen'},
+           {i:'interessieren', prat: 'interessierte', t: 'to interest'},
+           {i:'joggen', prat: 'joggte', t: 'to jog'},
+           {i:'kämmen', prat: 'kämmte', t: 'to comb'},
+           {i:'kaufen', prat: 'kaufte', t: 'to buy'},
+           {i:'kennen', prat: 'kannte', t: 'to know people'},
+           {i:'klettern', prat: 'kletterte', t: 'to climb'},
+           {i:'klingen', prat: 'klang', t: 'to sound'},
+           {i:'kochen', prat: 'kochte', t: 'to cook'},
+           {i:'kommen', prat: 'kam', t: 'to come'},
+           {i:'konzentrieren', prat: 'konzentrierte', t: 'to concentrate'},
+           {i:'kosten', prat: 'kostete', t: 'to cost'},
+           {i:'kriegen', prat: 'kriegte', t: 'to get'},
+           {i:'küssen', prat: 'küsste', t: 'to kiss'},
+           {i:'lächeln', prat: 'lächelte', t: 'to smile'},
+           {i:'lachen', prat: 'lachte', t: 'to laugh'},
+           {i:'lassen', prat: 'ließ', t: 'to allow, to let, to leave'},
+           {i:'laufen', prat: 'lief', t: 'to run, walk'},
+           {i:'leben', prat: 'lebte', t: 'to live'},
+           {i:'legen', prat: 'legte', t: 'to lay/put down'},
+           {i:'leihen', prat: 'lieh', t: 'to lend/borrow'},
+           {i:'leiten', prat: 'leitete', t: 'to lead, head'},
+           {i:'lernen', prat: 'lernte', t: 'to learn, study'},
+           {i:'lesen', prat: 'las', t: 'to read'},
+           {i:'lieben', prat: 'liebte', t: 'to love'},
+           {i:'liegen', prat: 'lag', t: 'to lie, be lying'},
+           {i:'machen', prat: 'machte', t: 'to do, make'},
+           {i:'meinen', prat: 'meinte', t: 'to mean, think'},
+           {i:'nehmen', prat: 'nahm', t: 'to take'},
+           {i:'nennen', prat: 'nannte', t: 'to name, call'},
+           {i:'öffnen', prat: 'öffnete', t: 'to open'},
+           {i:'packen', prat: 'packte', t: 'to pack'},
+           {i:'passen', prat: 'passte', t: 'to fit, suit'},
+           {i:'passieren', prat: 'passierte', t: 'to happen'},
+           {i:'planen', prat: 'plante', t: 'to plan'},
+           {i:'probieren', prat: 'probierte', t: 'to try, attempt'},
+           {i:'putzen', prat: 'putzte', t: 'to clean'},
+           {i:'rasieren', prat: 'rasierte', t: 'to shave'},
+           {i:'reden', prat: 'redete', t: 'to talk, converse'},
+           {i:'regnen', prat: 'regnete', t: 'to rain'},
+           {i:'reisen', prat: 'reiste', t: 'to travel'},
+           {i:'reiten', prat: 'ritt', t: 'to ride'},
+           {i:'rennen', prat: 'rannte', t: 'to run, race'},
+           {i:'reservieren', prat: 'reservierte', t: 'to reserve'},
+           {i:'retten', prat: 'rettete', t: 'to save from'},
+           {i:'rufen', prat: 'rief', t: 'to call'},
+           {i:'sagen', prat: 'sagte', t: 'to say'},
+           {i:'schaden', prat: 'schadete', t: 'to harm, hurt'},
+           {i:'schaffen', prat: 'schaffte', t: 'to manage, do'},
+           {i:'schauen', prat: 'schaute', t: 'to look, glance'},
+           {i:'scheinen', prat: 'schien', t: 'to appear'},
+           {i:'schenken', prat: 'schenkte', t: 'to give a gift'},
+           {i:'schicken', prat: 'schickte', t: 'to send'},
+           {i:'schlafen', prat: 'schlief', t: 'to sleep'},
+           {i:'schlagen', prat: 'schlug', t: 'to hit'},
+           {i:'schließen', prat: 'schloss', t: 'to close'},
+           {i:'schmecken', prat: 'schmeckte', t: 'to taste'},
+           {i:'schminken', prat: 'schminkte', t: 'to put on makeup'},
+           {i:'schneiden', prat: 'schnitt', t: 'to cut'},
+           {i:'schneien', prat: 'schneite', t: 'to snow'},
+           {i:'schreiben', prat: 'schrieb', t: 'to write'},
+           {i:'schreien', prat: 'schrie', t: 'to yell'},
+           {i:'schwimmen', prat: 'schwamm', t: 'to swim'},
+           {i:'sehen', prat: 'sah', t: 'to see'},
+           {i:'sein', prat: 'war', t: 'to be'},
+           {i:'setzen', prat: 'setzte', t: 'to set down'},
+           {i:'singen', prat: 'sang', t: 'to sing'},
+           {i:'sitzen', prat: 'saß', t: 'to be sitting'},
+           {i:'sparen', prat: 'sparte', t: 'to save'},
+           {i:'spielen', prat: 'spielte', t: 'to play'},
+           {i:'spinnen', prat: 'spann', t: 'to spin'},
+           {i:'sprechen', prat: 'sprach', t: 'to speak'},
+           {i:'springen', prat: 'sprang', t: 'to jump'},
+           {i:'stehen', prat: 'stand', t: 'to stand'},
+           {i:'steigen', prat: 'stieg', t: 'to climb'},
+           {i:'stellen', prat: 'stellte', t: 'to place, put'},
+           {i:'sterben', prat: 'starb', t: 'to die'},
+           {i:'stimmen', prat: 'stimmte', t: 'to be right'},
+           {i:'strecken', prat: 'streckte', t: 'to stretch'},
+           {i:'studieren', prat: 'studierte', t: 'to study'},
+           {i:'suchen', prat: 'suchte', t: 'to look for'},
+           {i:'surfen', prat: 'surfte', t: 'to surf'},
+           {i:'tanzen', prat: 'tanzte', t: 'to dance'},
+           {i:'teilen', prat: 'teilte', t: 'to share'},
+           {i:'töten', prat: 'tötete', t: 'to kill'},
+           {i:'tragen', prat: 'trug', t: 'to wear, carry'},
+           {i:'träumen', prat: 'träumte', t: 'to dream'},
+           {i:'treffen', prat: 'traf', t: 'to meet'},
+           {i:'trennen', prat: 'trennte', t: 'to separate'},
+           {i:'treten', prat: 'trat', t: 'to step, kick'},
+           {i:'trinken', prat: 'trank', t: 'to drink'},
+           {i:'trocknen', prat: 'trocknete', t: 'to dry'},
+           {i:'tun', prat: 'tat', t: 'to do'},
+           {i:'verdienen', prat: 'verdiente', t: 'to earn'},
+           {i:'vergessen', prat: 'vergaß', t: 'to forget'},
+           {i:'verlieben', prat: 'verliebte', t: 'to fall in love'},
+           {i:'verlieren', prat: 'verlor', t: 'to lose'},
+           {i:'verloben', prat: 'verlobte', t: 'to get engaged'},
+           {i:'verstehen', prat: 'verstand', t: 'to understand'},
+           {i:'vorbereiten', prat: 'bereitete vor', t: 'to prepare'},
+           {i:'vorschlagen', prat: 'schlug vor', t: 'to suggest'},
+           {i:'wachsen', prat: 'wuchs', t: 'to grow'},
+           {i:'wandern', prat: 'wanderte', t: 'to hike'},
+           {i:'warten', prat: 'wartete', t: 'to wait'},
+           {i:'waschen', prat: 'wusch', t: 'to wash'},
+           {i:'weinen', prat: 'weinte', t: 'to cry'},
+           {i:'werden', prat: 'wurde', t: 'to become'},
+           {i:'werfen', prat: 'warf', t: 'to throw'},
+           {i:'wiederholen', prat: 'wiederholte', t: 'to repeat'},
+           {i:'wissen', prat: 'wusste', t: 'to know facts'},
+           {i:'wohnen', prat: 'wohnte', t: 'to live, dwell'},
+           {i:'wünschen', prat: 'wünschte', t: 'to wish'},
+           {i:'zahlen', prat: 'zahlte', t: 'to pay'},
+           {i:'zeigen', prat: 'zeigte', t: 'to show'},
+           {i:'ziehen', prat: 'zog', t: 'to pull'}]
+
+
+/* i -> infinitive, a -> 'auxiliary', pp -> 'partizip 2', t -> translation */
+verbs2 = [{'i': 'anfangen',     'a': 'h', 'pp': 'angefangen', 't': 'to start'},
+          {'i': 'antworten',   'a': 'h', 'pp': 'geantwortet', 't': 'to answer, to reply'},
+		  {'i': 'arbeiten',    'a': 'h', 'pp': 'gearbeitet', 't': 'to work'},
+		  {'i': 'aufmachen',   'a': 'h', 'pp': 'aufgemacht', 't': 'to open'},
+          {'i': 'aufstehen',   'a': 's', 'pp': 'aufgestanden', 't': 'to get up'},
+		  {'i': 'aussehen',    'a': 'h', 'pp': 'ausgesehen', 't': 'to appear, look (a certain way)'},
+          {'i': 'backen',      'a': 'h', 'pp': 'gebacken', 't': 'to bake, to roast'},
+          {'i': 'beginnen',    'a': 'h', 'pp': 'begonnen', 't': 'to begin'},
+          {'i': 'bekommen',    'a': 'h', 'pp': 'bekommen', 't': 'to receive, to get'},
+          {'i': 'benutzen',    'a': 'h', 'pp': 'benutzt', 't': 'to use, to employ'},
+		  {'i': 'bestehen',    'a': 'h', 'pp': 'bestanden', 't': 'to exist, insist, pass (an exam)'},
+		  {'i': 'bieten',      'a': 'h', 'pp': 'beboten', 't': 'to offer'},
+          {'i': 'bleiben',     'a': 's', 'pp': 'geblieben', 't': 'to stay'},
+		  {'i': 'brauchen',    'a': 'h', 'pp': 'gebraucht', 't': 'to need'},
+          {'i': 'bringen',     'a': 'h', 'pp': 'gebracht', 't': 'to bring'},
+          {'i': 'denken',      'a': 'h', 'pp': 'gedacht', 't': 'to think'},
+		  {'i': 'dürfen',      'a': 'h', 'pp': 'gedurft', 't': 'may, to be allowed'},
+          {'i': 'einschlafen', 'a': 's', 'pp': 'eingeschlafen', 't': 'to fall asleep'},
+          {'i': 'entscheiden', 'a': 'h', 'pp': 'entschieden', 't': 'to decide'},
+		  {'i': 'erinnern',    'a': 'h', 'pp': 'erinnert', 't': 'to remember, to remind'},
+		  {'i': 'erkennen',    'a': 'h', 'pp': 'erkannt',  't': 'to recognize'},
+		  {'i': 'erklären',    'a': 'h', 'pp': 'erklärt', 't': 'to explain'},
+		  {'i': 'erwarten',    'a': 'h', 'pp': 'erwartet', 't': 'to expect'},
+          {'i': 'essen',       'a': 'h', 'pp': 'gegessen', 't': 'to eat'},
+          {'i': 'fahren',      'a': 's', 'pp': 'gefahren', 't': 'to drive'},
+		  {'i': 'fallen',      'a': 's', 'pp': 'gefallen',   't': 'to fall, to drop'},
+          {'i': 'fangen',      'a': 'h', 'pp': 'gefangen', 't': 'to catch'},
+          {'i': 'fernsehen',   'a': 'h', 'pp': 'ferngesehen', 't': 'to watch TV'},
+          {'i': 'filtern',     'a': 'h', 'pp': 'gefiltert', 't': 'to filter'},
+          {'i': 'finden',      'a': 'h', 'pp': 'gefunden', 't': 'to find'},
+          {'i': 'fliegen',     'a': 's', 'pp': 'geflogen', 't': 'to fly'},
+		  {'i': 'fragen',      'a': 'h', 'pp': 'gefragt', 't': 'to ask'},
+		  {'i': 'fühlen',      'a': 'h', 'pp': 'gefühlt', 't': 'to feel'},
+		  {'i': 'führen',      'a': 'h', 'pp': 'geführt', 't': 'to lead'},
+		  {'i': 'geben',       'a': 'h', 'pp': 'gegeben', 't': 'to give'},
+          {'i': 'gehen',       'a': 's', 'pp': 'gegangen', 't': 'to go'},
+		  {'i': 'gehören',     'a': 'h', 'pp': 'gehört', 't': 'to belong'},
+          {'i': 'gewinnen',    'a': 'h', 'pp': 'gewonnen', 't': 'to win, to gain'},
+		  {'i': 'glauben',     'a': 'h', 'pp': 'geglaubt', 't': 'to believe'},
+		  {'i': 'halten',      'a': 'h', 'pp': 'gehalten', 't': 'to stop, hold'},
+          {'i': 'hängen',      'a': 'h', 'pp': 'gehangen', 't': 'to hang, to be attached'},
+		  {'i': 'heißen',      'a': 'h', 'pp': 'geheißen', 't': 'to be called'},
+          {'i': 'helfen',      'a': 'h', 'pp': 'geholfen', 't': 'to help'},
+		  {'i': 'kennen',      'a': 'h', 'pp': 'gekannt', 't': 'to know'},
+		  {'i': 'können',      'a': 'h', 'pp': 'gekonnt', 't': 'can, to be able to'},
+          {'i': 'kommen',      'a': 's', 'pp': 'gekommen', 't': 'to come'},
+          {'i': 'lassen',      'a': 'h', 'pp': 'gelassen', 't': 'to allow, to leave'},
+          {'i': 'laufen',      'a': 's', 'pp': 'gelaufen', 't': 'to run, to jog'},
+		  {'i': 'leben',       'a': 'h', 'pp': 'gelebt', 't': 'to live'},
+		  {'i': 'legen',       'a': 'h', 'pp': 'gelegt', 't': 'to lay, put'},
+          {'i': 'lernen',      'a': 'h', 'pp': 'gelernt', 't': 'to learn'},
+          {'i': 'lesen',       'a': 'h', 'pp': 'gelesen', 't': 'to read'},
+		  {'i': 'lieben',      'a': 'h', 'pp': 'geliebt', 't': 'to love'},
+		  {'i': 'liegen',      'a': 'h', 'pp': 'gelegen', 't': 'to lie, be lying'},
+		  {'i': 'machen',      'a': 'h', 'pp': 'gemacht', 't': 'to do, make'},
+		  {'i': 'mögen',       'a': 'h', 'pp': 'gemocht', 't': 'to like'},
+		  {'i': 'müssen',      'a': 'h', 'pp': 'gemusst', 't': 'must, to have to'},
+          {'i': 'nehmen',      'a': 'h', 'pp': 'genommen', 't': 'to take'},
+          {'i': 'öffnen',      'a': 'h', 'pp': 'geöffnet', 't': 'to open'},
+          {'i': 'reisen',      'a': 's', 'pp': 'gereist', 't': 'to travel'},
+          {'i': 'rufen',       'a': 'h', 'pp': 'gerufen', 't': 'to call, to require one\'s presence'},
+		  {'i': 'sagen',       'a': 'h', 'pp': 'gesagt', 't': 'to say'},
+          {'i': 'schlafen',    'a': 'h', 'pp': 'geschlafen', 't': 'to sleep'},
+		  {'i': 'schließen',   'a': 'h', 'pp': 'geschlossen', 't': 'to close'},
+          {'i': 'schreiben',   'a': 'h', 'pp': 'geschrieben', 't': 'to write'},
+          {'i': 'schwimmen',   'a': 's', 'pp': 'geschwommen', 't': 'to swim'},
+          {'i': 'sehen',       'a': 'h', 'pp': 'gesehen', 't': 'to see'},
+		  {'i': 'sein',        'a': 's', 'pp': 'gewesen', 't': 'to be'},
+          {'i': 'singen',      'a': 'h', 'pp': 'gesungen', 't': 'to sing'},
+          {'i': 'sitzen',      'a': 'h', 'pp': 'gesessen', 't': 'to sit'},
+		  {'i': 'sollen',      'a': 'h', 'pp': 'gesollt',  't': 'should, ought to'},
+		  {'i': 'spielen',     'a': 'h', 'pp': 'gespielt', 't': 'to play'},
+          {'i': 'sprechen',    'a': 'h', 'pp': 'gesprochen', 't': 'to speak, to talk'},
+          {'i': 'springen',    'a': 's', 'pp': 'gesprungen', 't': 'to jump'},
+          {'i': 'stehen',      'a': 'h', 'pp': 'gestanden', 't': 'to stand'},
+		  {'i': 'stellen',     'a': 'h', 'pp': 'gestellt', 't': 'to pose (a question)'},
+		  {'i': 'sterben',     'a': 's', 'pp': 'gestorben', 't': 'to die'},
+		  {'i': 'studieren',   'a': 'h', 'pp': 'studiert', 't': 'to study'},
+		  {'i': 'suchen',      'a': 'h', 'pp': 'gesucht', 't': 'to search, look for'},
+          {'i': 'tragen',      'a': 'h', 'pp': 'getragen', 't': 'to carry or to wear'},
+          {'i': 'treffen',     'a': 'h', 'pp': 'getroffen', 't': 'to meet'},
+          {'i': 'trinken',     'a': 'h', 'pp': 'getrunken', 't': 'to drink'},
+		  {'i': 'tun',         'a': 'h', 'pp': 'getan', 't': 'to do'},
+          {'i': 'üben',        'a': 'h', 'pp': 'geübt', 't': 'to practice'},
+          {'i': 'unterschreiben', 'a': 'h', 'pp': 'unterschrieben', 't': 'to sign'},
+          {'i': 'verbinden',   'a': 'h', 'pp': 'verbunden', 't': 'to connect'},
+          {'i': 'vergessen',   'a': 'h', 'pp': 'vergessen', 't': 'to forget'},
+          {'i': 'vergleichen', 'a': 'h', 'pp': 'verglichen', 't': 'to compare'},
+          {'i': 'verlieren',   'a': 'h', 'pp': 'verloren', 't': 'to lose'},
+		  {'i': 'versuchen',   'a': 'h', 'pp': 'versucht', 't': 'to try, attempt'},
+          {'i': 'verstehen',   'a': 'h', 'pp': 'verstanden', 't': 'to understand'},
+		  {'i': 'vorstellen',  'a': 'h', 'pp': 'vorgestellt', 't': 'to introduce, imagine'},
+		  {'i': 'warten',      'a': 'h', 'pp': 'gewartet', 't': 'to wait'},
+		  {'i': 'wehtun',      'a': 'h', 'pp': 'wehgetan',  't': 'to hurt'},
+          {'i': 'werden',      'a': 'b', 'pp': 'geworden', 't': 'to become'},
+          {'i': 'wissen',      'a': 'h', 'pp': 'gewusst', 't': 'to know'},
+		  {'i': 'wohnen',      'a': 'h', 'pp': 'gewohnt', 't': 'to live, to reside'},
+		  {'i': 'wollen',      'a': 'h', 'pp': 'gewollt', 't': 'to want'},
+		  {'i': 'zeigen',      'a': 'h', 'pp': 'gezeigt', 't': 'to show'},
+		  {'i': 'zumachen',    'a': 'h', 'pp': 'zugemacht', 't': 'to close'},
+//          {'i': '',      'a': 'h', 'pp': '', 't': ''},
+	]
+
+
+TOTAL_VERBS = verbs.length
+QNT_VERBS = 15
+
+current_verb = -1
+right_answers = 0
+wrong_answers = 0
+
+// verbs will be shown in a random order according to this random permutation
+verbs = shuffle(verbs, TOTAL_VERBS)
+
+
+function show_final_message(){
+	document.getElementById("div_score").style.visibility = "hidden"
+
+	percentual = (100*(right_answers / (right_answers + wrong_answers))).toFixed(0)
+	document.getElementById("div_form").innerHTML = "" +
+	"<u><h3> Congratulations, you have conjugated " + QNT_VERBS + " verbs!!!</h3></u>"+
+	"<br/>"+
+	"<p> You have correctly answered <b>" + percentual + "%</b> of the questions.</p>"+
+	"<br/>"+
+	"<p> Click on ''Reload'' to start practicing again </p>"+
+	"<button href='#' class='btn' onclick='location.reload();'>Reload</button>"
+}
+
+function load_new_verb() {
+
+	document.getElementById("div_feedback").style.visibility = "hidden";
+
+	document.getElementById("btn_new").style.visibility = "hidden";
+	document.getElementById("btn_check").style.visibility = "visible";
+
+	document.getElementById("input_answer").readOnly = false
+
+	current_verb += 1
+
+	if (current_verb == QNT_VERBS){
+		show_final_message()
+	}else{
+		verb = verbs[current_verb]
+		document.getElementById("p_infinitive").innerHTML = verb.i;
+	}
+	
+	document.getElementById("input_answer").value = "";
+	document.getElementById("input_answer").focus()
+
+}
+
+function update_div_score(){
+	document.getElementById("p_correct_anwers").innerHTML = "Correct answers: " + right_answers + ".";
+	document.getElementById("p_wrong_answers").innerHTML = "Wrong answers: " + wrong_answers + ".";
+	document.getElementById("p_percentual").innerHTML = "Percentual: " + (right_answers / (right_answers + wrong_answers)).toFixed(2) + ".";
+}
+
+function show_positive_feedback(){
+	div_feedback = document.getElementById("div_feedback")
+	div_feedback.style.visibility = "visible";
+	div_feedback.innerHTML = "<p> Very good!   (: </p>"
+	div_feedback.style.background = "LightGreen"
+	div_feedback.style.color = "black"
+}
+
+function show_negative_feedback(){
+	verb = verbs[current_verb]
+	div_feedback = document.getElementById("div_feedback")
+	div_feedback.style.visibility = "visible";
+	div_feedback.innerHTML = "<p> Wrong... The expected answer was <b>''Ich " + verb.prat + "''</b>. </p>"
+	div_feedback.style.background = "Crimson"
+	div_feedback.style.color = "white"
+}
+
+function verify_answer() {
+	verb = verbs[current_verb]
+
+	/* show the translation */
+	document.getElementById("p_infinitive").innerHTML = verb.i + " (" + verb.t + ")";
+
+	expected_answer = new RegExp("\\s*" + verb.prat + "\\s*");
+	answer = "" + document.getElementById("input_answer").value;
+	correct = expected_answer.test(answer)
+
+	if (correct){
+		right_answers += 1
+		show_positive_feedback()
+	}else{
+		show_negative_feedback()
+		wrong_answers += 1
+	}
+
+	update_div_score()
+
+	document.getElementById("input_answer").readOnly = true
+	
+	document.getElementById("btn_new").style.visibility = "visible";
+	document.getElementById("btn_check").style.visibility = "hidden";
+}
+
+
+
+</script>
+
+	</head>
+	<body>
+		<div class="container">
+			<div class="header">
+				<h1 class="header-heading">Präteritum (past tense - German)</h1>
+			</div>
+			<div class="nav-bar">
+				<ul class="nav">
+					<li><a href="../index.html">Home</a></li>
+					<li><a href="#"></a></li>
+				</ul>
+			</div>
+			<div class="content">
+				<div class="main">
+
+					<h1>Conjugate the verb in the Präteritum</h1>
+					<hr>
+					<div style="height:250px" >
+						<div id="div_form" style="background-color:LightBlue; padding:10px; height:200px; float: left" >
+							<b> <p id="p_infinitive"> Ops...    </p> </b>
+
+							<p> Ich <input style="width:250px" type="text" id="input_answer" />.</p>
+
+							<button href="#" id="btn_new" class="btn" style="visibility:;" onclick="load_new_verb();">New</button>
+							<button href="#" id="btn_check" class="btn" onclick="verify_answer()">Check</button></p>
+						</div>
+					
+						<div id="div_score" style="background-color:#b0b0b0; padding:10px; width:200px; height:200px; float:right" >
+							<p id="p_correct_anwers"> Correct answers: 0 </p>
+							<p id="p_wrong_answers"> Wrong answers: 0</p>
+							<p id="p_percentual"> </p>
+						</div>
+
+					</div>
+					<div id="div_feedback" style="background-color:LightGreen; color:black; width:450px; padding:5px;visibility:hidden;">
+					</div>
+			
+					<div id="feedback_negative" style="background-color:Crimson; color:white; width:450px; padding:5px;visibility:hidden;">
+					</div>
+					<hr>
+					<p> You can press "ENTER" instead of clicking on "Check" and "New".</p>
+
+					<p>Notice that you can deduce the conjugation for the other pronouns (du, sie, er, wir, etc) from the conjugation used in this page: in general, for irregular verbs, add <b>st</b> for du and <b>en</b> for wir/sie (plural)/Sie. Thus, ich ging ==> du gingst, es/er/sie ging, wir gingen, ihr gingt, Sie gingen. </p>
+	
+				</div>
+			</div>
+			<div class="footer">
+				A good reference: <a href="http://www.dartmouth.edu/~deutsch/Grammatik/SimplePast/SimplePast.html" > Dartmouth </a>.
+				<br />
+				If you see any error, problem, etc or you have any suggestion, please, send me an e-mail (hilder [dot] vitor @ gmail [dot]com).
+			</div>
+		</div>
+
+		<script>
+			load_new_verb()
+			ENTER = 13
+			document.addEventListener('keypress', function (e) {
+
+				if (ENTER == e.keyCode) {
+					if (document.getElementById("btn_new").style.visibility == "visible"){
+						load_new_verb()
+					}else{ //	btn_check is active 
+						verify_answer()
+					}
+				}
+			
+			})
+		</script>
+	</body>
+</html>
