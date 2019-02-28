@@ -218,7 +218,7 @@ function verify_answer() {
 	}else{ /* verb.a === 's' */
 		auxiliary = "bin"
 	}
-	expected_answer = new RegExp("\\s*" + auxiliary + "\\s+" + verb.pp + "\\s*");
+	expected_answer = new RegExp("\\s*" + auxiliary + "\\s+" + verb.pp + "\\s*", 'i');
 	answer = "" + document.getElementById("input_answer").value;
 	correct = expected_answer.test(answer)
 

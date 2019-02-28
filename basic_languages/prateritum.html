@@ -292,7 +292,7 @@ function verify_answer() {
 	/* show the translation */
 	document.getElementById("p_infinitive").innerHTML = verb.i + " (" + verb.t + ")";
 
-	expected_answer = new RegExp("\\s*" + verb.prat + "\\s*");
+	expected_answer = new RegExp("\\s*" + verb.prat + "\\s*", 'i');
 	answer = "" + document.getElementById("input_answer").value;
 	correct = expected_answer.test(answer)
 
