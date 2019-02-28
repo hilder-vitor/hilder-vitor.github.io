@@ -97,6 +97,7 @@ verbs = [{'i': 'anfangen',     'a': 'h', 'pp': 'angefangen', 't': 'to start'},
           {'i': 'reisen',      'a': 's', 'pp': 'gereist', 't': 'to travel'},
           {'i': 'rufen',       'a': 'h', 'pp': 'gerufen', 't': 'to call, to require one\'s presence'},
 		  {'i': 'sagen',       'a': 'h', 'pp': 'gesagt', 't': 'to say'},
+          {'i':'schenken',     'a': 'h', 'pp': 'geschenkt', t: 'to give a gift'},
           {'i': 'schlafen',    'a': 'h', 'pp': 'geschlafen', 't': 'to sleep'},
 		  {'i': 'schließen',   'a': 'h', 'pp': 'geschlossen', 't': 'to close'},
           {'i': 'schreiben',   'a': 'h', 'pp': 'geschrieben', 't': 'to write'},
@@ -135,18 +136,18 @@ verbs = [{'i': 'anfangen',     'a': 'h', 'pp': 'angefangen', 't': 'to start'},
 		  {'i': 'wollen',      'a': 'h', 'pp': 'gewollt', 't': 'to want'},
 		  {'i': 'zeigen',      'a': 'h', 'pp': 'gezeigt', 't': 'to show'},
 		  {'i': 'zumachen',    'a': 'h', 'pp': 'zugemacht', 't': 'to close'},
-//          {'i': '',      'a': 'h', 'pp': '', 't': ''},
 	]
 
 
-QNT_VERBS = verbs.length
+TOTAL_VERBS = verbs.length
+QNT_VERBS = 15
 
 current_verb = -1
 right_answers = 0
 wrong_answers = 0
 
 // verbs will be shown in a random order according to this random permutation
-verbs = shuffle(verbs, QNT_VERBS)
+verbs = shuffle(verbs, TOTAL_VERBS)
 
 
 function show_final_message(){
@@ -154,7 +155,7 @@ function show_final_message(){
 
 	percentual = (100*(right_answers / (right_answers + wrong_answers))).toFixed(0)
 	document.getElementById("div_form").innerHTML = "" +
-	"<u><h3> Congratulations, you have conjugated all our " + QNT_VERBS + " verbs!!!</h3></u>"+
+	"<u><h3> Congratulations, you have conjugated " + QNT_VERBS + " verbs!!!</h3></u>"+
 	"<br/>"+
 	"<p> You have correctly answered <b>" + percentual + "%</b> of the questions.</p>"+
 	"<br/>"+
@@ -290,6 +291,9 @@ function verify_answer() {
 			</div>
 			<div class="footer">
 				A good reference: <a href="https://www.dartmouth.edu/~deutsch/Grammatik/perfect/Perfect.html" > Dartmouth </a>.
+				<br />
+				If you see any error, problem, etc or you have any suggestion, please, send me an e-mail (hilder [dot] vitor @ gmail [dot]com).
+
 			</div>
 		</div>
 
