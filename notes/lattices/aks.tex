@@ -1,0 +1,214 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[utf8]{inputenc}
+%
+%\usepackage{epsfig}
+\usepackage{amsfonts} % classic fonts (N, Q, R, C)
+\usepackage{amsmath}  % equation, align*, \mod command
+\usepackage{amsthm}   % \theoremstyle (to define remark and definition)
+%\usepackage{amsfonts}
+%\usepackage{amssymb}
+%\usepackage{verbatim}
+
+\usepackage[a4paper,hmargin=2.2cm,vmargin=2.7cm]{geometry} % 2cm, 2.3cm
+
+
+%\usepackage{listings}
+%\usepackage{algorithm,algorithmic}
+
+% For algorithms
+%\usepackage{algorithm2e}
+\usepackage[linesnumbered,boxed,ruled,vlined]{algorithm2e}
+%\usepackage{algpseudocode}
+
+\usepackage{url}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%    My own commands
+
+\newcommand\N{{\mathbb N}}
+\newcommand\Z{{\mathbb Z}}
+\newcommand\Q{{\mathbb Q}}
+\newcommand\R{{\mathbb R}}
+\newcommand\Zq{{\mathbb Z}_q}
+\newcommand\Zqn{{\mathbb Z}_q^n}
+\newcommand\Zn{{\mathbb Z}^n}
+\newcommand\Zqm{{\mathbb Z}_q^m}
+\newcommand\Zm{{\mathbb Z}^m}
+\newcommand\Zqnm{{\mathbb Z}_q^{n\times m}}
+\newcommand\Znm{{\mathbb Z}^{n\times m}}
+
+\newcommand\A{{\mathbf A}}
+\newcommand\LqA{\mathcal{L}_q^{\bot}\left(\A\right)}
+\newcommand\LB{\mathcal{L}\left(\vec B\right)}
+
+\newcommand\DLs[1]{D_{\LB, s, #1}}
+
+\newcommand\smooth{\eta_\epsilon}
+
+%\newcommand\poly{\textsf{poly}}
+
+\newcommand\SIS{\textbf{SIS}_{n, q, \beta, m}}
+\newcommand\SVP{\textbf{searchSVP}}
+\newcommand\gapSVP{\textbf{gapSVP}_\gamma}
+\newcommand\SIVP{\textbf{SIVP}_\gamma}
+\newcommand\incIVD{\textbf{IncIVD}_{\gamma, g}^{\smooth}}
+
+\newcommand\sample{ \xleftarrow{\text{ \$ }} }
+
+\DeclareMathOperator{\img}{\textsf{Img}}
+\DeclareMathOperator{\poly}{\textsf{poly}}
+
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert_2}
+
+\let\vec\mathbf %%%% Redefining \vec to use bold letters instead of arrow
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Theorems, corolaries, etc
+ 
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Title Page
+\title{AKS Algorithm: Solving the exact SVP problem}
+\author{Hilder Vítor Lima Pereira}
+\date{June, 2019}
+
+
+
+\begin{document}
+\maketitle
+
+%\begin{abstract}
+%\end{abstract}
+
+\section{Introduction}
+
+Let $\vec{B}$ be a basis of an $n$-dimensional lattice $\mathcal{L}$.
+
+
+Due to Ajtai, Kumar, and Sivakumar~\cite{aks2001}. 
+
+Finds a shortest vector of a given lattice.
+
+The running time of AKS is $2^{O(n)}\cdot \poly(n, B)$, where $B = max_{i, 
+j}\log(|b_{i,j}|)$ for entries $b_{i,j}$ of $\vec B$. That is, a simple 
+exponential in the dimension times a polynomial in the input size.
+
+It is randomized, i.e., it samples random values during it execution and may 
+output wrong answers, although it happens with negligible probability (the 
+output is an actual shortest vector with probability exponentially close to 
+one: $1 - 2^{-n}$).
+
+
+\section{From interval $[2, 3)$ to any lattice}
+
+The goal of this section is to show that any algorithm to a shortest vector in 
+a lattice whose $\lambda_1 \in [2, 3)$ can be turned in an algorithm to find a 
+shortest vector of general lattices.
+
+Let $\mathcal{L}$ be an $n$-dimensional lattice and $\lambda_1$ be its the 
+first successive minima (the length of its shortest vector).
+
+Using LLL, we can find an estimate $e$ for $\lambda_1$ such that
+$$\lambda_1 \le e \le 2^n\lambda_1.$$
+
+Manipulating that inequality, we get:
+$$1 \le \frac{e}{\lambda_1} \le 2^n \Leftrightarrow \frac{1}{2^n} \le 
+\frac{\lambda_1}{e} \le 1
+\Leftrightarrow \frac{e}{2^n} \le \lambda_1 \le e.$$
+
+Therefore, we know that the length of a shortest nonzero vector of 
+$\mathcal{L}$ is in the interval $\left[ e\cdot 2^{-n}, e \right]$.
+
+Now consider the lattice $\mathcal{L}' := \frac{2^{n+1}}{e}\mathcal{L}$. Then, 
+clearly we have 
+$$2 \le \lambda_1\left(\mathcal{L}'\right) \le 2^{n+1}.$$
+
+Moreover, if $\vec v$ is a shortest nonzero vector of $\mathcal{L}'$, then 
+$\frac{e}{2^{n+1}} \vec v$ is a shortest nonzero vector of $\mathcal{L}$. 
+Therefore, it is sufficient to solve the SVP on $\mathcal{L}'$.
+
+Furthermore, notice that by choosing $x = 3/2$, we have $3x^k = 2x^{k+1}$ for 
+any $k \in \N^*$, and then the interval in which 
+$\lambda_1\left(\mathcal{L}'\right)$ lies can be partitioned in intervals of 
+the form $[2x^k, 3x^k)$, that is, for some $\ell \in \N$, we have:
+
+$$[2, 2^{n+1}] \subset [2, 3) \cup [2x, 3x) \cup [2x^2, 3x^2) \cup ... \cup 
+[2x^\ell, 3x^\ell).$$
+
+We need an $\ell$ such that $3x^\ell > 2^{n+1} \Leftrightarrow 3(3/2)^\ell > 
+2^{n+1} \Leftrightarrow 3^{\ell+1} > 2^{\ell + n+1}$, an it is 
+sufficient to take $\ell = 2n$.
+
+
+
+\begin{definition}[Shortest Vector Problem: $\SVP$] Given a vector $\LB$, find 
+a vector $\vec v \in \LB$ such that $\norm{\vec v} = \lambda_1(\LB)$.
+\end{definition}
+
+\begin{lemma}
+Testing Lemma
+\end{lemma}
+
+\begin{proof}
+It is trivial.
+\end{proof}
+
+
+\begin{remark}
+Testing remark
+\end{remark}
+
+\begin{theorem}[Testing theorem]
+A fake but nice theorem.
+\end{theorem}
+\begin{proof}
+It is also trivial.
+\end{proof}
+
+\begin{algorithm}
+\DontPrintSemicolon
+\KwIn{A basis $\vec B$ of a lattice $\mathcal{L}$}
+\KwOut{A vector $\vec v \in \LB$ that is a solution to $\SVP$.}
+\SetKwComment{Comment}{$\triangleright$\ }{}
+
+$j \sample \{1,...,m\}$
+
+\For{$\ell = 1$ \emph{ until } $2n$}{
+    \lIf{$\ell = j$}{
+		$\vec y_i \gets \DLs{\vec c_j}$
+    }
+    \lElse{
+		$\vec y_i \gets \DLs{\vec 0}$
+    }
+}
+
+$\vec A := \vec{B}^{-1} \vec Y \mod q \in \Zqnm$ \Comment*[r]{The oracle 
+$\mathcal{O}$ expects 
+$\A$ to be uniform in $\Zqnm$.}
+
+$\vec e \gets \mathcal{O}(\A)$ \Comment*[r]{$\vec e$ should satisfy $\norm{\vec 
+e} \le \beta$ and $\A\vec e = \vec 0 \mod q$.}
+
+\Return{$\vec v$}
+\caption{{\sc AKS}}
+\label{alg:AKS}
+\end{algorithm}
+
+The first important thing to do in order to analyze 
+algorithm~\ref{alg:AKS} is...
+
+\bibliographystyle{alpha}
+\bibliography{aks.bib}
+
+\end{document}
+
+
