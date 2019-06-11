@@ -1,0 +1,738 @@
+\documentclass[aspectratio=43]{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{csquotes}%Correctly typeset Vojtech
+\usepackage{csvsimple}
+\usepackage{booktabs}
+\usepackage{styles/beamer_eit-en}
+\usepackage[font={scriptsize}]{caption}%Smaller image captions, it for italics, can choose footnotesize to be even smaller
+\captionsetup[figure]{labelformat=empty}%Remove "Figure" from the figure caption
+%\setbeamertemplate{footline}[frame number]
+%\setbeamerfont{footline}{series=\bfseries}
+
+\usepackage{tikz}
+\usepackage{subcaption}
+
+% Algorithms packages
+\usepackage[linesnumbered,boxed,ruled,vlined]{algorithm2e}
+%\usepackage{algorithm2e}
+%\usepackage{algorithm,algpseudocode}
+%\usepackage{algorithm,algorithmic}
+
+%Mathematic packages
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amsbsy}
+
+%\usepackage[backend=biber,
+%style=authoryear,]{biblatex}
+\usepackage{biblatex}
+
+% File is created and written to disk by the above package
+%\addbibresource{literature.bib}
+
+
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert_2}
+\newcommand{\ball}[1]{\mathcal{B}(0, #1)}
+\DeclareMathOperator{\poly}{\textsf{poly}}
+\DeclareMathOperator{\vol}{\textsf{vol}}
+
+\let\vec\mathbf %%%% Redefining \vec to use bold letters instead of arrow
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Theorems, corolaries, etc
+
+%\newtheorem{theorem}{Theorem}[section]
+%\newtheorem{corollary}{Corollary}[theorem]
+%\newtheorem{lemma}[theorem]{Lemma}
+%\theoremstyle{definition}
+%\newtheorem{definition}{Definition}[section]
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+\title[AKS Algorithm]{AKS Algorithm: Finding shortest nonzero vectors.}
+
+\author{Hilder Vítor Lima Pereira}
+
+\institute{\emph{Introduction to lattices and their applications in Computer 
+Science/Cryptography.}\\
+	Doctoral Programme in Computer Science and Computer Engineering\\
+	University of Luxemburg.\\
+}
+\date{12th June, 2019}
+
+\begin{document}
+
+
+
+\begin{frame}
+        \maketitle
+\end{frame}
+
+\begin{frame}{Table of contents}
+        \tableofcontents
+\end{frame}
+
+\section{Introduction}
+
+\begin{frame}
+\frametitle{Introduction}
+
+\textbf{SVP:}
+
+Given a lattice $\mathcal{L}$, the shortest nonzero vector problem (SVP) is 
+the problem of finding a point $\vec v \in \mathcal{L} \setminus \{\vec{0}\}$ 
+such that the Euclidean norm is minimized, that is, $\forall u \in 
+\mathcal{L}\setminus \{ \vec 0\}, \norm{v} \le \norm{u}$.
+\end{frame}
+
+\begin{frame}
+\frametitle{Introduction}
+
+\textbf{Solving SVP:}
+\vspace*{0.25cm}
+
+Algorithms for approximate versions of SVP.
+\begin{itemize}
+	\item LLL solves approx. SVP with  exponential approximation factor in 
+	polynomial-time.
+	\item BKZ solves approx. SVP with polynomial approximation factor roughly 
+	in exponential time.
+\end{itemize}
+
+
+\vspace*{0.25cm}
+
+AKS solves the exact version of SVP using exponential time and memory.
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Overview}
+
+\begin{enumerate}
+\item Sample $2^{O(n)}$ random lattice points inside a ball 
+$\ball{R}$.
+
+\item Find ``centers points'' among them, i.e., points close to several other 
+points.
+
+\item Get new lattice points by computing the difference between the points and 
+their centers. (Note that the new points lie in $\ball{R'}$ with $R' < R$).
+
+\item Repeat it with those new points unless they are already shorter than some 
+bound.
+
+\item Output the shortest vector among the remaining ones.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
+\frametitle{1. How does one sample random lattice points within a ball?}
+
+We actually sample them indirectly:
+\begin{itemize}
+\item Sample a \emph{real} vector $\vec x \in \ball{R} \cap \mathbb{R}^n$.
+\item Compute $\vec y \in \mathcal{P}(\vec B)$ (the fundamental region)  such 
+that $\vec y - \vec x \in \mathcal{L}$.
+\item Define $\vec z = \vec y - \vec x$ as the random lattice point.
+\end{itemize}
+
+\vspace*{0.25cm}
+We compute $\vec y$ as $\vec x \mod \vec B :=  \mathbf{x} - \mathbf{B} 
+\lfloor\mathbf{B}^{-1} \mathbf{x} \rfloor$, which is a ``reduction modulo the 
+basis $\vec B$''.
+
+\vspace*{0.25cm}
+Notice that $\vec z$ is the corner of the translated fundamental region that 
+covers $\vec x$.
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{2. How does one find center points?}
+
+We use a procedure known as Sieve:
+
+\begin{algorithm}[H]
+%	\KwResult{Write here the result }
+%	initialization\;
+\KwIn{A positive $R \in \mathbb{R}$ and $X := \{\vec{x}_1, ..., 
+\vec{x}_N\}\subset\ball{R}$}
+\KwOut{A set $C$ of pairs $(i, j)$ such that $\vec{x}_j$ is the center of 
+$\vec{x}_i$.}
+\SetKwComment{Comment}{$\triangleright$\ }{}
+$C := \emptyset$
+
+\For{$i = 1$ \emph{ until } $N$}{
+	
+	\If{$\exists (i', j) \in J$ such that $\norm{\vec{x}_i - \vec{x}_j} \le 
+	R/2$}{
+		$C = C \cup \{(i, j)\}$ \Comment*[r]{$\vec{x}_j$ becomes the center of 
+		$\vec{x}_i$}
+	}\Else{
+		$C = C \cup \{(i, i)\}$ \Comment*[r]{$\vec{x}_i$ becomes its own center}
+	}
+}
+\caption{{\sc SIEVE}}
+\end{algorithm}
+\vspace*{0.25cm}
+Notice that the ``centers'' are defined by the second entry of the pairs $(i, 
+j)$ in $C$. For each $\vec{x}_i$, its center is $\vec{x}_j$.
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{2. How does one find center points?}
+
+\begin{lemma}
+Let $R \in \mathbb{R}_{>0}$. For any set of points $X = \{\vec{x}_1, ..., 
+\vec{x}_N \} \subset \ball{R}$, let $C$ be the set returned by {\sc SIEVE}. Then
+\begin{itemize}
+\item[(i)] $C$ defines at most $5^n$ centers and
+\item[(ii)] $\forall (i, j) \in C$, $\norm{\vec{x}_i - \vec{x}_j} \le R/2$
+\end{itemize}
+Moreover, (iii) {\sc SIEVE} runs in polynomial time in the input size.
+\end{lemma}
+
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{2. How does one find center points?}
+
+\begin{proof}
+Define balls of radius $\frac{R}{4}$ around each center.
+Notice that they are disjoint, because the distance between two centers is 
+bigger than $\frac{R}{2}$.
+
+Furthermore, their union is contained in 
+$\ball{\frac{5R}{4}}$.
+
+Therefore, the number of balls (which equals the number of centers) is at most
+
+$$\frac{\vol(\ball{\frac{5R}{4}})}{\vol(\ball{\frac{R}{4}})} = 5^n.$$
+
+Propositions (ii) and (iii) are trivial.
+\end{proof}
+
+\vspace*{0.5cm}
+Remember that $\vol(\ball{R}) = \frac{\pi^{n/2}R^n}{\Gamma(n/2+1)}$.
+
+\end{frame}
+
+\section{AKS for $\lambda_1 \in [2, 3)$}
+
+\begin{frame}
+\frametitle{AKS for $\lambda_1 \in [2, 3)$}
+
+We are almost ready to see the algorithm AKS. Before defining it to the general 
+case, let's assume we are working over lattices for which
+
+$$\lambda_1 \in [2, 3).$$
+
+We will see in the end how to remove this restriction.
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{algorithm}[H]
+	%	\KwResult{Write here the result }
+	%	initialization\;
+	\KwIn{A basis $\vec B$ of an $n$-dimensional lattice whose 
+		$\lambda_1 \in [2, 3)$}
+	\KwOut{A shortest nonzero vector of $\mathcal{L}(\vec B)$}
+	\SetKwComment{Comment}{$\triangleright$\ }{}
+	$R := n\cdot \max \norm{\vec{b}_j}$
+
+	Sample $X:= \{\vec{x}_1, ..., \vec{x}_N \}$ unif. in $\ball 2$, 
+	with $N := 2^{8n}\log{R}$
+	
+	$Y := \{\vec{y}_i := \vec{x}_i \mod \vec{B} : \vec{x}_i \in X \}$
+	
+	\While{$R > 6$}{
+		$C := \text{{\sc SIEVE}}(Y)$
+		
+		\For{each center $\vec{y}_j$ defined by $C$}{
+			$Y = Y \setminus \{\vec{y}_j\}$; $X = X \setminus \{\vec{x}_j\}$
+		}
+		
+		\For{each $\vec{y}_j$ in $Y$}{
+			Let $\vec{y}_c$ be the center of $\vec{y}_j$
+			
+			$\vec{y}_j = \vec{y}_j - (\vec{y}_c - \vec{x}_c)$
+		}
+		$R = R/2 + 2$
+	}
+	Return the shortest $(\vec{y}_i - \vec{x}_i) - (\vec{y}_j - \vec{x}_j)$ 
+	(among $Y$ and $X$)
+	\caption{{\sc AKS*}, for $\lambda_1 \in [2, 3)$}
+\end{algorithm}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{AKS for $\lambda_1 \in [2, 3)$}
+
+\begin{lemma}
+The number of iterations of the while loop in {\sc AKS*} is at most $2\log 
+R_0$, where $R_0$ is the first value assigned to $R$.
+\end{lemma}
+
+\pause
+\begin{proof}
+Let $R_k$ be the value of $R$ on the beginning of the $k$-th iteration.
+
+Then, we have $R_1 = R_0$, $R_2 = R_0/2 + 2$, $R_3 = R_0/2^2 + 1 + 2$, $R_4 = 
+R_0/2^3 + 1/2 + 1 + 2$, etc.
+
+In general, $R_k = R_0 / 2^{k-1} + 2 + \sum_{i=0}^{k-3}1/2^i$.
+
+For $k = \lceil \log R_0 \rceil + 1$ we have $R_k \le 1 + 2 + 2 = 5 < 6$ and 
+then the while loop is aborted.
+
+Therefore, the number of iterations is at most 
+$$\lceil \log R_0 \rceil + 1 \le 2\log R_0.$$
+\end{proof}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{AKS for $\lambda_1 \in [2, 3)$}
+
+\begin{lemma}
+{\sc AKS*} runs in time $2^{O(n)}$ times some polynomial in the
+input size.
+\end{lemma}
+
+\pause
+\begin{proof}
+	
+	Let $B = \log(R_0)$ be the input length.
+	\vspace*{0.1cm}
+	
+	The initialization step, before the while loop, already costs 
+	$2^{O(n)}\poly(B)$. The final step, after the loop, is clearly cheaper than 
+	this (since we have removed several points from $Y$ and $X$).
+	\vspace*{0.1cm}	
+	
+	The procedure {\sc SIEVE} runs in polynomial time in the number of centers, 
+	that is, $O(\poly(5^n)) = 2^{O(n)}$.
+	\vspace*{0.1cm}
+	
+	By the last lemma, {\sc SIEVE} is executed at most $2B$ times,
+	therefore, the cost of the loop is also $2^{O(n)}\poly(B)$.
+\end{proof}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{AKS for $\lambda_1 \in [2, 3)$}
+
+\begin{lemma}
+Let $Z := \{(\vec{x}_i, \vec{y}_i) : \vec{x}_i \in X \land \vec{y}_i := 
+\vec{x}_i \mod \vec B \}$.
+At the end of {\sc AKS*}, the set $Z$ has an exponential number of pairs 
+and each pair gives us a lattice vector with norm bounded by $8$.
+\end{lemma}
+
+\begin{remark}
+Several pairs $(\vec{x}_i, \vec{y}_i)$ and $(\vec{x}_j, \vec{y}_j)$ define the 
+same lattice point...
+\end{remark}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{AKS for $\lambda_1 \in [2, 3)$}
+
+\begin{proof}
+	
+	By the definition of $\vec{y}_i$, at the beginning of the algorithm, we 
+	have $\vec{y}_i \in \mathcal{P}(\vec B)$, thus, $\norm{\vec{y}_i} \le 
+	\sum\vec{b}_j \le R_0$. And at each iteration $k$, $\vec{y}_i$ is updated 
+	to $\vec{y}_i - (\vec{y}_c - \vec{x}_c)$, therefore, its norm becomes
+	$$\norm{\vec{y}_i - (\vec{y}_c - \vec{x}_c)} \le \norm{\vec{y}_i - 
+		\vec{y}_c} + \norm{ \vec{x}_c} \le R_k/2 + 2.$$
+	
+	Thus, at the end of the last iteration, we have $\norm{\vec{y}_i} \le 6$.
+	
+	Therefore, we have $\vec{y}_i - \vec{x}_i \in \mathcal{L}$ and 
+	$$\norm{\vec{y}_i - \vec{x}_i} \le 6 + 2 = 8.$$
+	
+	Now notice that at the each iteration, at most $5^n$ points are removed 
+	from $X$ and $Y$, therefore 
+	$$|Z| \ge N - 5^n\cdot 2\log R_0 = (2^{8n} - 2\cdot 
+	5^n)\log R_0 \ge 2^{7n}\log R_0.$$
+\end{proof}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{AKS for $\lambda_1 \in [2, 3)$}
+
+Lets breath a bit...
+\begin{itemize}
+\item We have proved that {\sc AKS*} finds an exponentially large 
+set of pairs which define (possibly repeated) very short lattice points.
+
+\item Remember that we are supposing $\lambda_1 \in [2, 3)$ and all those 
+lattice points have norm smaller than $8$. Therefore, they are already a very 
+good approximation to a shortest nonzero vector.
+
+\item Intuitively, it is very likely that a shortest 
+nonzero vector is indeed among them.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{AKS for $\lambda_1 \in [2, 3)$}
+
+How can we prove that {\sc AKS*} really finds a shortest nonzero vector with 
+high probability?
+
+\vspace*{0.5cm}
+
+\emph{Intuition:}
+
+\begin{itemize}
+\item Notice that if we sample the points $\vec{x}_i$ differently, but keeping 
+the same distribution, the algorithm's output must be the same.
+
+\item For analysis purposes, sample $\vec{x}_i$ such that many of them are 
+equal to a fixed $\vec{w}$ and many have the form $\vec{w} \pm \vec{v}$, where  
+$\vec{v}$ is a shortest nonzero vector.
+
+\item Then, at the end of the algorithm, with high probability, we will have 
+$\vec{x}_i$ and $\vec{x}_j$ whose difference equals $\pm\vec{v}$.
+
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{AKS for $\lambda_1 \in [2, 3)$}
+
+A lemma that we will need later...
+
+\begin{lemma}
+Let $\mathcal{L}$ be a lattice such that $\lambda_1 \in [2, 3)$. Then there are 
+at most $9^{n}$ lattice points inside $\ball{8}$.
+\end{lemma}
+
+\pause
+
+\begin{proof}
+Let $m$ be the number of points in $\mathcal{L} \cap \ball{8}$.
+
+Because $\lambda_1 \ge 2$, we can consider $m$ disjoint balls of radius $1$ 
+centered in 
+each lattice point inside $\ball{8}$.
+
+Then, the union of all these balls is contained in $\ball{9}$.
+
+Thus, we have $m \cdot \vol(\ball{1}) \le \vol(\ball{9})$. Therefore,
+
+$$m \le \frac{\vol(\ball{9})}{\vol(\ball{1})} = 9^n.$$
+
+
+\end{proof}
+
+\end{frame}
+\begin{frame}
+\frametitle{AKS for $\lambda_1 \in [2, 3)$}
+
+\begin{theorem}
+If $\lambda_1 \in [2, 3)$, then {\sc AKS*} returns a shortest nonzero vector 
+with probability exponentially close to 1, i.e., bigger than $1 - 2^{-n}$. 
+\end{theorem}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{AKS for $\lambda_1 \in [2, 3)$}
+
+Sketch of the proof
+\vspace*{0.25cm}
+	
+Let $\vec{v}$ be a shortest nonzero vector, thus $\norm{\vec{v}} \in [2, 3)$.
+
+Define $C_1 := \ball{2}\cap \mathcal{B}(-\vec{v}, 2)$ and $C_2 := \ball{2}\cap 
+\mathcal{B}(\vec{v}, 2)$.
+\pause
+
+\begin{figure}
+\centering
+\begin{subfigure}[b]{0.45\textwidth}
+\begin{tikzpicture}[scale=0.50, transform shape]
+\begin{scope}
+\clip (1, 3) circle (2);
+\clip (3, 3) circle (2);
+\fill[color=blue!20] (-2, 0) rectangle (10, 6);
+\end{scope}
+\begin{scope}
+\clip (3, 3) circle (2);
+\clip (5, 3) circle (2);
+\fill[color=blue!20] (-2, 0) rectangle (10, 6);
+\end{scope}
+\draw (1, 3) circle (2);
+\draw (3, 3) circle (2);
+\draw (5, 3) circle (2);
+\filldraw[black] (1,3) circle (2pt) node[anchor=north] {$-\vec v$};
+\filldraw[black] (3,3) circle (2pt) node[anchor=north] {(0,0)};
+\filldraw[black] (5,3) circle (2pt) node[anchor=north] {$\vec v$};
+\node at (2, 3.5) {$C_1$};
+\node at (4, 3.5) {$C_2$};
+\end{tikzpicture}
+\caption{Example for $\norm{\vec v} = 2$.}
+\end{subfigure}
+\quad
+\begin{subfigure}[b]{0.45\textwidth}
+\begin{tikzpicture}[scale=0.50, transform shape]
+\begin{scope}
+\clip (0, 3) circle (2);
+\clip (3, 3) circle (2);
+\fill[color=blue!20] (-2, 0) rectangle (10, 6);
+\end{scope}
+\begin{scope}
+\clip (3, 3) circle (2);
+\clip (6, 3) circle (2);
+\fill[color=blue!20] (-2, 0) rectangle (10, 6);
+\end{scope}
+\draw (0, 3) circle (2);
+\draw (3, 3) circle (2);
+\draw (6, 3) circle (2);
+\filldraw[black] (0,3) circle (2pt) node[anchor=north] {$-\vec v$};
+\filldraw[black] (3,3) circle (2pt) node[anchor=north] {(0,0)};
+\filldraw[black] (6,3) circle (2pt) node[anchor=north] {$\vec v$};
+\node at (1.5, 3.3) {$C_1$};
+\node at (4.5, 3.3) {$C_2$};
+\end{tikzpicture}
+\caption{Example for $\norm{\vec v} = 3$.}
+\end{subfigure}
+%\caption{Figure caption here}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{AKS for $\lambda_1 \in [2, 3)$}
+
+Sketch of the proof
+\vspace*{0.25cm}
+
+Define the function $\tau: X \to X$ that flips vectors from $C_1$ to $C_2$ and 
+vice-versa:
+
+\begin{equation*}
+\tau(\vec{x}_i) = \begin{cases}
+               \vec{x}_i + \vec{v},    & \text{if } \vec{x}_i \in C_1\\
+               \vec{x}_i - \vec{v},    & \text{if } \vec{x}_i \in C_2\\
+               \vec{x}_i,              & \text{otherwise}
+           \end{cases}
+\end{equation*}
+
+Notice that $\tau$ is a bijection, therefore, $X$ and $\tau(X)$ follow the same 
+distribution.
+
+Moreover, $\vec{x}_i = \vec{x}_i \pm \vec{v} \mod \vec B$, therefore 
+$$\vec{y}_i = \vec{x}_i \mod \vec B \Leftrightarrow \vec{y}_i = \tau(\vec{x}_i) 
+\mod \vec B.$$
+
+Therefore, {\sc AKS*} has the same output given $X$ or $\tau(X)$.
+\end{frame}
+
+
+\begin{frame}
+\frametitle{AKS for $\lambda_1 \in [2, 3)$}
+
+Sketch of the proof
+\vspace*{0.25cm}
+
+Hence, apply $\tau$ to all $\vec{x}_i$.
+
+As proved earlier, we have more than $2^{7n}$ vectors $\vec{x}_i$ at the end of 
+the algorithm. For each of them, we have a lattice point $\vec{z}_i := 
+\vec{y}_i - \vec{x}_i$ and $\vec{x}_i \in \ball{8}$. But there are at most 
+$9^{n}$ lattice points inside $\ball{8}$.
+
+Therefore, there exists $\vec{w} \in \mathcal{L}$ yielded by at least $2^{7n} / 
+9^n \ge 2^{3.8n}$ pairs of $\vec{x}_i$ and $\vec{y}_i$.
+
+Then, with high probability*, for such $\vec{w}$, at least one $\vec{x}_i$ is 
+in 
+$C_1 \cup C_2$ and at least one $\vec{x}_j$ doesn't belong to $C_1 \cup C_2$.
+
+But then, $\vec{x}_i$ is flipped by $\tau$ and $\vec{x}_j$ isn't, and 
+therefore, {\sc AKS*} returns 
+$$(\vec{y}_i - \vec{x}_i \pm \vec{v}) - (\vec{y}_j - \vec{x}_j) = \vec{w} \pm 
+\vec{v} - \vec{w} = \pm \vec{v}.$$
+
+
+
+\end{frame}
+
+
+\begin{frame}
+Sketch of the proof
+\vspace*{0.25cm}
+
+* It is not hard to see that for such $\vec{w}$, at least one $\vec{x}_i$ is in 
+$C_1 \cup C_2$ with probability bigger than $1 - 2^{-n}$.
+
+Notice that $\mathcal{B}(\vec{v}/2, 0.5)$ fits in $C_1$ and also in $C_2$. 
+Hence, $\vol(C_1) \ge \vol(\mathcal{B}(\vec{v}/2, 0.5))$. Therefore, 
+
+$$\frac{\vol(C_1)}{\vol(\ball{2})} \ge \frac{\vol(\mathcal{B}(\vec{v}/2, 
+0.5))}{\vol(\ball{2})} = \frac{0.5^n}{2^n} = 2^{-2n}.$$
+
+Thus, we have $\forall \vec{x}_i \leftarrow \mathcal{U}\left(\ball{2}\right), 
+Pr[\vec{x}_i \in C_1 \cup C_2] \ge 2\cdot 2^{-2n}$.
+
+Then, considering the (more than) $2^{3.8n}$ vectors $\vec{x}_i$ associated to 
+$\vec{w}$ and using Chebyshev's inequality, we have 
+%$$Pr[\forall i, \vec{x}_i \not \in C_1 \cup C_2] \le \left(1 - 2\cdot 
+%2^{-2n}\right)^{2^{3.8n}}$$
+%and therefore,
+$$Pr[\exists i : \vec{x}_i \in C_1 \cup C_2] \ge 1 - 
+\frac{2^{2n}}{2^{3.8n}} = 1 - \frac{1}{2^{1.8n}} \ge 1 - 2^{-n}.$$
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{AKS for $\lambda_1 \in [2, 3)$}
+
+\begin{proof}[Sketch of the proof]
+* Using a similar argument we can also see that for such $\vec{w}$, at least 
+one $\vec{x}_i$ is outside $C_1 \cup C_2$ with probability bigger than $1 - 
+2^{-n}$.
+\end{proof}
+\end{frame}
+
+
+\section{AKS for general lattices}
+\begin{frame}
+\frametitle{Removing the restriction $\lambda_1 \in [2, 3)$}
+
+Using LLL, we can find an estimate $e$ for $\lambda_1$ such that
+$$\lambda_1 \le e \le 2^n\lambda_1.$$
+
+Manipulating that inequality, we get:
+$$1 \le \frac{e}{\lambda_1} \le 2^n \Leftrightarrow \frac{1}{2^n} \le 
+\frac{\lambda_1}{e} \le 1
+\Leftrightarrow \frac{e}{2^n} \le \lambda_1 \le e.$$
+
+Therefore, we know that the length of a shortest nonzero vector of 
+$\mathcal{L}$ is in the interval $\left[ \frac{e}{2^{n}}, e \right]$.
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Removing the restriction $\lambda_1 \in [2, 3)$}
+
+\begin{itemize}
+\item Consider the lattice $\mathcal{L}' := \frac{2^{n+1}}{e}\mathcal{L}$.
+
+\item Then $2 \le \lambda_1\left(\mathcal{L}'\right) \le 2^{n+1}.$
+
+\item If $\vec v$ is a shortest nonzero vector of $\mathcal{L}'$ , then 
+$\frac{e}{2^{n+1}} \vec v$ is a shortest nonzero vector of $\mathcal{L}$. 
+
+\item Therefore, it is sufficient to solve the SVP on $\mathcal{L}'$.
+
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Removing the restriction $\lambda_1 \in [2, 3)$}
+
+How to solve SVP on $\mathcal{L}'$ knowing that $\lambda_1(\mathcal{L}') \in 
+[2, 2^{n+1}]$?
+
+\begin{itemize}
+\item Write
+$$[2, 2^{n+1}] \subset [2, 3) \cup [2x, 3x) \cup [2x^2, 3x^2) \cup ... \cup 
+[2x^\ell, 3x^\ell).$$
+
+\item By choosing $x = 3/2$, we have $3x^k = 2x^{k+1}$.
+
+\item We need an $\ell$ such that $3x^\ell > 2^{n+1} \Leftrightarrow 
+3(3/2)^\ell > 2^{n+1} \Leftrightarrow 3^{\ell+1} > 2^{\ell + n+1}$, an it is 
+sufficient to take $\ell = 2n$.
+
+\item Then, for some $k \in \{0, ..., \ell\}$, $\lambda_1(\mathcal{L}') \in 
+[2x^k, 3x^k)$.
+
+\item Therefore, for such $k$, $\lambda_1(x^{-k}\mathcal{L}') = 
+x^{-k}\lambda_1(\mathcal{L}') \in [2, 3)$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{The AKS algorithm (for any $\lambda_1$)}
+\begin{algorithm}[H]
+	%	\KwResult{Write here the result }
+	%	initialization\;
+	\KwIn{A basis $\vec B$ of an $n$-dimensional lattice $\mathcal{L}$}
+	\KwOut{A shortest nonzero vector of $\mathcal{L}(\vec B)$}
+	\SetKwComment{Comment}{$\triangleright$\ }{}
+	Run LLL to get an estimate $e$ for $\lambda_1$
+
+	Define $\mathcal{L}' := \frac{2^{n+1}}{e}\mathcal{L}$ \Comment*[r]{Just 
+	multiply $\vec{B}$ by $\frac{2^{n+1}}{e}$}
+
+	\For{$k = 0$ until $2n$}{
+		Define $\mathcal{L}_k := x^{-k}\mathcal{L}'$
+
+		$\vec{v}_k = $ {\sc AKS*}($\mathcal{L}_k$)
+	}
+	
+	Let $\vec{v}$ be a shortest nonzero vector among all $\vec{v}_k$
+	
+	Let $\vec{u} = x^k\vec{v}$ be a shortest nonzero vector of $\mathcal{L}'$
+	
+	Return $\frac{e}{2^{n+1}}\vec{u}$
+	\caption{{\sc AKS}}
+\end{algorithm}
+\end{frame}
+
+\begin{frame}
+\frametitle{References}
+\footnotesize{
+	\begin{thebibliography}{99} % Beamer does not support BibTeX so references 
+	%must be nserted manually as below
+		\bibitem[AKS2001]{p1} M. Ajtai, R. Kumar, D. Sivakumar (2001)
+		\newblock A sieve algorithm for the shortest vector problem.
+		\newblock \emph{Procedings of the thirty-third annual ACM symposium on 
+		Theory of 
+		Computing}. Pages 601 - 610.
+	\end{thebibliography}
+	
+	
+	\begin{thebibliography}{99} % Beamer does not support BibTeX so 
+		%references 
+		%must be nserted manually as below
+	\bibitem[Regev2004]{p1} Oded Regev (2004)
+	\newblock $2^{O(n)}$-time algorithm for SVP.
+	\newblock \emph{Lecture notes: Lattices in Computer Science}. Tel Aviv 
+	University.
+	\end{thebibliography}
+	
+}
+\end{frame}
+
+
+\end{document}
