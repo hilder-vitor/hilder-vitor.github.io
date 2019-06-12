@@ -84,8 +84,8 @@ Science/Cryptography.}\\
 
 Given a lattice $\mathcal{L}$, the shortest nonzero vector problem (SVP) is 
 the problem of finding a point $\vec v \in \mathcal{L} \setminus \{\vec{0}\}$ 
-such that the Euclidean norm is minimized, that is, $\forall u \in 
-\mathcal{L}\setminus \{ \vec 0\}, \norm{v} \le \norm{u}$.
+such that the Euclidean norm is minimized, that is, $\forall \vec{u} \in 
+\mathcal{L}\setminus \{ \vec 0\}, \norm{\vec{v}} \le \norm{\vec{u}}$.
 \end{frame}
 
 \begin{frame}
@@ -101,11 +101,16 @@ Algorithms for approximate versions of SVP.
 	\item BKZ solves approx. SVP with polynomial approximation factor roughly 
 	in exponential time.
 \end{itemize}
-
-
+\pause 
+\vspace*{0.2cm}
+\textbf{What about AKS?}
 \vspace*{0.25cm}
-
-AKS solves the exact version of SVP using exponential time and memory.
+\begin{itemize}
+	\item It solves the exact version of SVP.
+	\item Exponential time and memory.
+	\item It is a randomized algorithm.
+	\item It outputs the correct answer with overwhelming probability.
+\end{itemize}
 \end{frame}
 
 
@@ -169,7 +174,7 @@ $C := \emptyset$
 
 \For{$i = 1$ \emph{ until } $N$}{
 	
-	\If{$\exists (i', j) \in J$ such that $\norm{\vec{x}_i - \vec{x}_j} \le 
+	\If{$\exists (i', j) \in C$ such that $\norm{\vec{x}_i - \vec{x}_j} \le 
 	R/2$}{
 		$C = C \cup \{(i, j)\}$ \Comment*[r]{$\vec{x}_j$ becomes the center of 
 		$\vec{x}_i$}
@@ -247,12 +252,15 @@ We will see in the end how to remove this restriction.
 		$\lambda_1 \in [2, 3)$}
 	\KwOut{A shortest nonzero vector of $\mathcal{L}(\vec B)$}
 	\SetKwComment{Comment}{$\triangleright$\ }{}
-	$R := n\cdot \max \norm{\vec{b}_j}$
+	$R := n\cdot \max \norm{\vec{b}_j} + 2$
 
-	Sample $X:= \{\vec{x}_1, ..., \vec{x}_N \}$ unif. in $\ball 2$, 
-	with $N := 2^{8n}\log{R}$
+	$N := 2^{8n}\log{R}$
+
+	Sample $X:=\{\vec{x}_1, ..., \vec{x}_N \}$ unif. in $\ball 2 \cap 
+	\mathbb{R}^n$
 	
-	$Y := \{\vec{y}_i := \vec{x}_i \mod \vec{B} : \vec{x}_i \in X \}$
+	$Y := \{\vec{y}_i := \vec{x}_i \mod \vec{B} : \vec{x}_i \in X \} \subset 
+	\mathcal{P}(\vec B)$
 	
 	\While{$R > 6$}{
 		$C := \text{{\sc SIEVE}}(Y)$
@@ -313,20 +321,20 @@ input size.
 \pause
 \begin{proof}
 	
-	Let $B = \log(R_0)$ be the input length.
+	Let $S = \log(R_0)$ be the input length.
 	\vspace*{0.1cm}
 	
 	The initialization step, before the while loop, already costs 
-	$2^{O(n)}\poly(B)$. The final step, after the loop, is clearly cheaper than 
+	$2^{O(n)}\poly(S)$. The final step, after the loop, is clearly cheaper than 
 	this (since we have removed several points from $Y$ and $X$).
 	\vspace*{0.1cm}	
 	
-	The procedure {\sc SIEVE} runs in polynomial time in the number of centers, 
-	that is, $O(\poly(5^n)) = 2^{O(n)}$.
+	The procedure {\sc SIEVE} runs in polynomial time in the number of points 
+	it receives, that is, $O(\poly(2^{8n}\log R)) = 2^{O(n)}\poly(S)$.
 	\vspace*{0.1cm}
 	
-	By the last lemma, {\sc SIEVE} is executed at most $2B$ times,
-	therefore, the cost of the loop is also $2^{O(n)}\poly(B)$.
+	By the last lemma, {\sc SIEVE} is executed at most $2S$ times,
+	therefore, the cost of the loop is also $2^{O(n)}\poly(S)$.
 \end{proof}
 
 \end{frame}
@@ -357,7 +365,8 @@ same lattice point...
 	
 	By the definition of $\vec{y}_i$, at the beginning of the algorithm, we 
 	have $\vec{y}_i \in \mathcal{P}(\vec B)$, thus, $\norm{\vec{y}_i} \le 
-	\sum\vec{b}_j \le R_0$. And at each iteration $k$, $\vec{y}_i$ is updated 
+	\sum\norm{\vec{b}_j} \le R_0$. And at each iteration $k$, $\vec{y}_i$ is 
+	updated 
 	to $\vec{y}_i - (\vec{y}_c - \vec{x}_c)$, therefore, its norm becomes
 	$$\norm{\vec{y}_i - (\vec{y}_c - \vec{x}_c)} \le \norm{\vec{y}_i - 
 		\vec{y}_c} + \norm{ \vec{x}_c} \le R_k/2 + 2.$$
@@ -463,7 +472,7 @@ with probability exponentially close to 1, i.e., bigger than $1 - 2^{-n}$.
 
 Sketch of the proof
 \vspace*{0.25cm}
-	
+
 Let $\vec{v}$ be a shortest nonzero vector, thus $\norm{\vec{v}} \in [2, 3)$.
 
 Define $C_1 := \ball{2}\cap \mathcal{B}(-\vec{v}, 2)$ and $C_2 := \ball{2}\cap 
@@ -562,7 +571,7 @@ Hence, apply $\tau$ to all $\vec{x}_i$.
 
 As proved earlier, we have more than $2^{7n}$ vectors $\vec{x}_i$ at the end of 
 the algorithm. For each of them, we have a lattice point $\vec{z}_i := 
-\vec{y}_i - \vec{x}_i$ and $\vec{x}_i \in \ball{8}$. But there are at most 
+\vec{y}_i - \vec{x}_i$ and $\vec{z}_i \in \ball{8}$. But there are at most 
 $9^{n}$ lattice points inside $\ball{8}$.
 
 Therefore, there exists $\vec{w} \in \mathcal{L}$ yielded by at least $2^{7n} / 
@@ -621,6 +630,15 @@ one $\vec{x}_i$ is outside $C_1 \cup C_2$ with probability bigger than $1 -
 
 
 \section{AKS for general lattices}
+\begin{frame}
+\frametitle{Removing the restriction $\lambda_1 \in [2, 3)$}
+
+``Okay, nice. But our lattices don't have such a small $\lambda_1$!''
+
+\hfill - Impatient audience.
+
+\end{frame}
+
 \begin{frame}
 \frametitle{Removing the restriction $\lambda_1 \in [2, 3)$}
 
