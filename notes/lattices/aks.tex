@@ -102,20 +102,40 @@ The running time of AKS is $2^{O(n)}\cdot \poly(n, B)$, where $B = max_{i,
 j}\log(|b_{i,j}|)$ for entries $b_{i,j}$ of $\vec B$. That is, a simple 
 exponential in the dimension times a polynomial in the input size.
 
-It is randomized, i.e., it samples random values during it execution and may 
+It is randomized, i.e., it samples random values during its execution and may 
 output wrong answers, although it happens with negligible probability (the 
 output is an actual shortest vector with probability exponentially close to 
 one: $1 - 2^{-n}$).
 
 
+\section{AKS algorithm for interval $[2, 3)$}
+
+In this section, we show the AKS algorithm, which receives a lattice 
+$\mathcal{L}$, assumes that $2 \le \lambda_1 < 3$, and returns a vector $\vec v 
+\in \mathcal L$ such that $\norm{\vec v} = \lambda_1$ (with overwhelming 
+probability).
+
+In fact, if $\lambda_1 \not \in [2, 3)$, then AKS still returns a lattice 
+vector, but then we do not have guarantees that it is a shortest non zero 
+vector. Therefore, to solve the SVP for a general lattice (with $\lambda_1$ 
+lying in any interval), we just transform a general lattice $\mathcal{L}$ in a 
+sequence of lattices $\mathcal{L}_1$, $\mathcal{L}_2$, ..., $\mathcal{L}_\ell$ 
+such that at least one $\mathcal{L}_k$ have a shortest nonzero vector inside 
+the 
+interval $[2, 3)$, and we run AKS for each of these lattices, returning the 
+shortest nonzero vector found among the $\ell$ calls to AKS. We show it in more 
+detail in the section~\ref{sec:from_2_3_to_general}.
+
+
 \section{From interval $[2, 3)$ to any lattice}
+\label{sec:from_2_3_to_general}
 
-The goal of this section is to show that any algorithm to a shortest vector in 
-a lattice whose $\lambda_1 \in [2, 3)$ can be turned in an algorithm to find a 
-shortest vector of general lattices.
+The goal of this section is to show that any algorithm to find a shortest 
+nonzero vector in a lattice whose $\lambda_1 \in [2, 3)$ can be turned in an 
+algorithm to find a shortest nonzero vector of general lattices.
 
-Let $\mathcal{L}$ be an $n$-dimensional lattice and $\lambda_1$ be its the 
-first successive minima (the length of its shortest vector).
+Let $\mathcal{L}$ be an $n$-dimensional lattice and $\lambda_1$ be its first 
+successive minima, i.e., the length of its shortest vector.
 
 Using LLL, we can find an estimate $e$ for $\lambda_1$ such that
 $$\lambda_1 \le e \le 2^n\lambda_1.$$
@@ -134,7 +154,7 @@ $$2 \le \lambda_1\left(\mathcal{L}'\right) \le 2^{n+1}.$$
 
 Moreover, if $\vec v$ is a shortest nonzero vector of $\mathcal{L}'$, then 
 $\frac{e}{2^{n+1}} \vec v$ is a shortest nonzero vector of $\mathcal{L}$. 
-Therefore, it is sufficient to solve the SVP on $\mathcal{L}'$.
+Therefore, it is sufficient to solve the SVP in $\mathcal{L}'$.
 
 Furthermore, notice that by choosing $x = 3/2$, we have $3x^k = 2x^{k+1}$ for 
 any $k \in \N^*$, and then the interval in which 
@@ -148,6 +168,26 @@ We need an $\ell$ such that $3x^\ell > 2^{n+1} \Leftrightarrow 3(3/2)^\ell >
 2^{n+1} \Leftrightarrow 3^{\ell+1} > 2^{\ell + n+1}$, an it is 
 sufficient to take $\ell = 2n$.
 
+Thus, we can assume that $\lambda_1(\mathcal{L}')$ lies in some of those 
+intervals $[2x^k, 3x^k)$. But in this case, $x^{-k}\lambda_1(\mathcal{L}') \in 
+[2, 3)$. Therefore, defining $\mathcal{L}_k := x^{-k}\mathcal{L}'$, we can use 
+the algorithm that solves SVP in $[2, 3)$ to find a shortest vector $\vec v \in 
+\mathcal{L}_k$. Then, $x^k\vec v$ is a shortest vector of $\mathcal{L}'$, and 
+finally, $\left(\frac{e}{2^{n+1}}\right)x^k\vec v$ is a shortest vector of the 
+original lattice $\mathcal{L}$.
+
+Hence, if we have an algorithm $\mathcal{A}$ that solves the SVP when the first 
+minima belongs to $[2, 3)$, then given a lattice $\mathcal{L}$, we can define 
+$\mathcal{L}'$ as above and for each $k \in \{0, 1, ..., 2n\}$, define 
+$\mathcal{L}_k := x^{-k}\mathcal{L}$ and $\vec{v}_k := 
+\mathcal{A}\left(\mathcal{L}_k\right)$. Then, set $\vec v$ as the shortest 
+vector 
+among those $\vec{v}_0, \vec{v}_1, ..., \vec{v}_{2n}$ and output 
+$\left(\frac{e}{2^{n+1}}\right)x^k\vec v$, which will be a shortest vector of 
+$\mathcal{L}$.
+
+Notice that, denoting by $T(n)$ the time complexity of $\mathcal{A}$, then we 
+can solve SVP using such method in time $O(n \cdot T(n))$.
 
 
 \begin{definition}[Shortest Vector Problem: $\SVP$] Given a vector $\LB$, find 
