@@ -16,7 +16,7 @@ MathJax.Hub.Config({
   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML" async>
 		</script>
 
-		<link href="../../css/default.css" rel="stylesheet" type="text/css" media="all">
+		<link href="../../css/style.css" rel="stylesheet" type="text/css" media="all">
 	</head>
 
 	<body>
@@ -28,15 +28,21 @@ MathJax.Hub.Config({
 <!--				<li> - Decisional, optimization, and search versions are (polynomial) equivalent.</li>
 <br /> -->
 
-				<li> - Unlike CVP, SVP is not shown to be NP-complete! There are some hardness results for SVP, but just considering very specific scenarios (for instance, using the $\ell_\infty$ norm) or under other types of reductions (such as randomized or non-uniform reductions). <b>Therefore it may be possible that solving SVP is easier than solving CVP!</b> But even so, SVP is beleived to be NP-Hard.</li>
+				<li> Unlike CVP, SVP is not known to be NP-complete! There are
+				some hardness results for SVP, but just considering very
+				specific scenarios (for instance, using the $\ell_\infty$ norm)
+				or under other types of reductions (such as randomized or
+				non-uniform reductions). <b>Therefore it may be possible
+				that solving SVP is easier than solving CVP!</b> But even so,
+				SVP is beleived to be NP-Hard.</li>
 				<br />
 
-				<li> - For any constant $\gamma \in [1,2[$ and any function $\alpha(n) > \sqrt{\frac{ n}{(2/\gamma)^2 - 1}}$, we can solve $CVP_\alpha$ with $O(n\log n)$ calls to an oracle that solves $SVP_\gamma$ [MC2002, theorem 4.2].
+				<li> For any constant $\gamma \in [1,2[$ and any function $\alpha(n) > \sqrt{\frac{ n}{(2/\gamma)^2 - 1}}$, we can solve $CVP_\alpha$ with $O(n\log n)$ calls to an oracle that solves $SVP_\gamma$ [MC2002, theorem 4.2].
 				<p> Note, however, that it is not sufficient to show that $SVP_\gamma$ is NP-Hard because $CVP_\alpha$ is not known to be NP-Hard for such values of $\alpha$.</p>
 				</li>
 				<br />
 
-				<li> - If a specific number theoretic conjecture concerning the distribution of square free smooth numbers holds, then $\forall p \in \mathbb{N}^*$, $GapSVP_\gamma$  is NP-Hard if $\gamma < \sqrt[p]{2}$ [MC2002, Corollary 4.10].</li>
+				<li> If a specific number theoretic conjecture concerning the distribution of square free smooth numbers holds, then $\forall p \in \mathbb{N}^*$, $GapSVP_\gamma$  is NP-Hard if $\gamma < \sqrt[p]{2}$ [MC2002, Corollary 4.10].</li>
 			</ul>
 
 			
