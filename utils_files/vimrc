@@ -1,0 +1,47 @@
+syntax on
+
+set number
+set is
+set showmatch
+set ts=4
+set shiftwidth=4
+set tabstop=4
+
+set autoindent
+
+set hlsearch
+
+map <F2> o/***************************************************<Esc>o*	<Esc>o*	Author: Hilder Vitor Lima Pereira <Esc>o*	e-mail: hilder.vitor@gmail.com	<Esc>o****************************************************/<Esc>kkkkk :set autoindent <ENTER>i
+
+map <F3> oint main (int argc, char** argv){<Esc>o<Esc>o return 0;<Esc>o}<Esc>:set autoindent<ENTER>kki	
+
+
+map <F8> ocout << endl;<Esc>hhhhi
+
+
+filetype indent plugin on
+
+" Some commands to the tabs
+nmap <tab> :tabprevious <enter>
+nmap t :tabnext <enter>
+cabbrev t tabnew
+
+
+" Commenting blocks of code.
+autocmd FileType c,cpp,java,scala,javascript 	let b:comment_leader = '//'
+autocmd FileType sh,ruby,python,sage			let b:comment_leader = '#'
+autocmd FileType conf,fstab,m      				let b:comment_leader = '#'
+autocmd FileType tex              				let b:comment_leader = '%'
+autocmd FileType mail             				let b:comment_leader = '>'
+autocmd FileType vim              				let b:comment_leader = '"'
+noremap <silent> ,cc :<C-B>silent <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:nohlsearch<CR>
+noremap <silent> ,cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
+
+
+" Setting a mark on the 80-th column
+augroup collumnLimit
+	autocmd!
+	autocmd FileType c,cpp,java,javascript,python,sage,sh  highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+	autocmd FileType c,cpp,java,javascript,python,sage,sh  match OverLength /\%81v/
+augroup END
+
