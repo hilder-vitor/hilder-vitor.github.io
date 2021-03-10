@@ -12,6 +12,7 @@ document.write('\
 			</a>\
 			<a href="https://publons.com/researcher/4028422/hilder-vitor-lima-pereira/" target="_blank" style="padding-left:5px; padding-right:10px">\
 				<img src="images/publons_icon.jpg" width="80px"/>\
-			</a>');
-
+			</a>\
+			<div id="wcb" class="carbonbadge"></div>\
+			<script src="https://unpkg.com/website-carbon-badges@1.1.1/b.min.js" defer></script>');
 
