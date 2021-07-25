@@ -98,3 +98,9 @@ a {
 	text-decoration: none;
 }
 
+li.award {
+	list-style-type: none;
+	background: url(../images/medalha25.png) left top no-repeat;
+        padding: 0 0 0 26px;
+	margin-left: -25px;
+}
