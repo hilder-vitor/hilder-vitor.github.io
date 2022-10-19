@@ -10,8 +10,8 @@ document.write('\
 			<a href="http://crypto.stackexchange.com/users/18666" target="_blank" style="padding-left:5px; padding-right:10px">\
 				<img src="images/crypto_stackexchange_icon.png" width="50px"/>\
 			</a>\
-			<a href="https://publons.com/researcher/4028422/hilder-vitor-lima-pereira/" target="_blank" style="padding-left:5px; padding-right:10px">\
-				<img src="images/publons_icon.jpg" width="80px"/>\
+			<a href="https://scholar.google.com.br/citations?hl=en&user=GzPUh2EAAAAJ" target="_blank" style="padding-left:5px; padding-right:10px">\
+				<img src="images/google-scholar-icon.jpg" width="80px"/>\
 			</a>\
 			<div id="wcb" class="carbonbadge" style="float:right"></div>\
 			<script src="https://unpkg.com/website-carbon-badges@1.1.1/b.min.js" defer></script>');
